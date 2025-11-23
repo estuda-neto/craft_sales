@@ -2,18 +2,18 @@ import type { CreationOptional, InferAttributes, InferCreationAttributes } from 
 import { Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
 
 export enum TypeUser {
-    LEITOR = 'LEITOR',
+    CLIENTE = 'CLIENTE',
     ADMIN = 'ADMIN',
-    COLUNISTA = 'COLUNISTA',
+    ARTESAO = 'ARTESAO',
 }
 export function fromString(value: string): TypeUser {
     switch (value) {
-        case 'LEITOR':
-            return TypeUser.LEITOR;
+        case 'CLIENTE':
+            return TypeUser.CLIENTE;
         case 'ADMIN':
             return TypeUser.ADMIN;
-        case 'COLUNISTA':
-            return TypeUser.COLUNISTA;
+        case 'ARTESAO':
+            return TypeUser.ARTESAO;
         default:
             throw new Error('type user invalid.');
     }
@@ -75,4 +75,6 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
 
     @Column(DataType.BOOLEAN)
     declare checked: CreationOptional<boolean>;
+
+    //relationships
 }

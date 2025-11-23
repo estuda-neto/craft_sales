@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @Module({
     imports: [SequelizeModule.forRoot({
@@ -9,7 +10,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
         username: 'postgres',
         password: 'postgres',
         database: "craft_sales",
-        models: [],
+        models: [User],
         autoLoadModels: true,
         synchronize: true
     })]
