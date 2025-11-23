@@ -1,5 +1,6 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
-import { Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { BeforeCreate, Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
+import * as bcrypt from 'bcrypt';
 
 export enum TypeUser {
     CLIENTE = 'CLIENTE',
@@ -77,4 +78,14 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     declare checked: CreationOptional<boolean>;
 
     //relationships
+
+
+    //Listeners
+    @BeforeCreate
+    static async hashPassword(instance: User) {
+        const salt = await bcrypt.genSalt(12);
+        instance.userStatus = TypeUserStatus.ACTIVE;
+        instance.typeuser = TypeUser.CLIENTE;
+        instance.password = await bcrypt.hash(instance.password, salt);
+    }
 }
