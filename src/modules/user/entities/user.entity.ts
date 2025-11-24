@@ -1,6 +1,7 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
-import { BeforeCreate, Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AfterCreate, BeforeCreate, Column, DataType, Default, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
 import * as bcrypt from 'bcrypt';
+import { Car } from "src/modules/car/entities/car.entity";
 
 export enum TypeUser {
     CLIENTE = 'CLIENTE',
@@ -79,6 +80,9 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
 
     //relationships
 
+    /** retationship 1:1 -> Car*/
+    @HasOne(() => Car)
+    declare car?: Car;
 
     //Listeners
     @BeforeCreate
@@ -87,5 +91,10 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
         instance.userStatus = TypeUserStatus.ACTIVE;
         instance.typeuser = TypeUser.CLIENTE;
         instance.password = await bcrypt.hash(instance.password, salt);
+    }
+
+    @AfterCreate
+    static async createPortfolio(instance: User) {
+        await Car.create({ userId: instance.userId, name: `${instance.name} user's shopping cart` });
     }
 }

@@ -27,7 +27,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   //config swagger docs
-  const config = new DocumentBuilder().setTitle("midia sabugiense").setDescription('Documentação da API').setVersion('1.0').addBearerAuth().build();
+  const config = new DocumentBuilder().setTitle("craft sales").setDescription('Documentação da API').setVersion('1.0').addBearerAuth().build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
   await app.listen(process.env.PORT ?? 3000);
