@@ -1,5 +1,12 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { Address } from 'src/modules/address/entities/address.entity';
+import { Assessment } from 'src/modules/assessment/entities/assessment.entity';
+import { Car } from 'src/modules/car/entities/car.entity';
+import { Category } from 'src/modules/category/entities/category.entity';
+import { Item } from 'src/modules/item/entities/item.entity';
+import { Order } from 'src/modules/order/entities/order.entity';
+import { Product } from 'src/modules/product/entities/product.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 
 @Module({
@@ -10,7 +17,7 @@ import { User } from 'src/modules/user/entities/user.entity';
         username: 'postgres',
         password: 'postgres',
         database: "craft_sales",
-        models: [User],
+        models: [User, Product, Order, Item, Category, Car, Assessment, Address],
         autoLoadModels: true,
         synchronize: true
     })]
