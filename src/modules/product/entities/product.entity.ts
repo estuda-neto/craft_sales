@@ -1,5 +1,9 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
-import { Column, DataType, Default, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { BelongsTo, BelongsToMany, Column, DataType, Default, ForeignKey, HasMany, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Assessment } from "src/modules/assessment/entities/assessment.entity";
+import { Category } from "src/modules/category/entities/category.entity";
+import { ProductCategory } from "src/modules/category/entities/productcategory.entity";
+import { Item } from "src/modules/item/entities/item.entity";
 
 @Table({ tableName: "tb_products", timestamps: true })
 export class Product extends Model<InferAttributes<Product>, InferCreationAttributes<Product>> {
@@ -10,4 +14,22 @@ export class Product extends Model<InferAttributes<Product>, InferCreationAttrib
 
     @Column(DataType.STRING)
     declare name: string;
+
+    //relationships
+
+    /**relationship 1:1 Item */
+    @ForeignKey(() => Item)
+    @Column(DataType.UUID)
+    declare itemId?: string;
+
+    @BelongsTo(() => Item)
+    declare item?: Item;
+
+    /**relationships 1:N Assessment */
+    @HasMany(() => Assessment)
+    declare assessments?: Assessment[];
+
+    /**relationships N:N Category */
+    @BelongsToMany(()=>Category,()=>ProductCategory)
+    declare categories?:Category[];
 }

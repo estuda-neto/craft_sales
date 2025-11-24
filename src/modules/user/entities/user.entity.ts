@@ -1,7 +1,8 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
-import { AfterCreate, BeforeCreate, Column, DataType, Default, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AfterCreate, BeforeCreate, BelongsTo, Column, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
 import * as bcrypt from 'bcrypt';
 import { Car } from "src/modules/car/entities/car.entity";
+import { Address } from "src/modules/address/entities/address.entity";
 
 export enum TypeUser {
     CLIENTE = 'CLIENTE',
@@ -54,18 +55,6 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     @Column(DataType.STRING)
     declare bio: CreationOptional<string>;
 
-    @Column(DataType.STRING)
-    declare country: string;
-
-    @Column(DataType.STRING)
-    declare state: string;
-
-    @Column(DataType.STRING)
-    declare city: string;
-
-    @Column(DataType.STRING)
-    declare address: string;
-
     @Column(DataType.FLOAT)
     declare score: CreationOptional<number>;
 
@@ -78,11 +67,19 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     @Column(DataType.BOOLEAN)
     declare checked: CreationOptional<boolean>;
 
-    //relationships
+    //relationships - no use CreationOptional, sequelize ja trata como atributo de relacionamento. opcional
 
     /** retationship 1:1 -> Car*/
     @HasOne(() => Car)
     declare car?: Car;
+
+    /** retationship N:1 -> Address*/
+    @ForeignKey(() => Address)
+    @Column(DataType.UUID)
+    declare addressId: string;
+
+    @BelongsTo(() => Address)
+    declare address?: Address;
 
     //Listeners
     @BeforeCreate

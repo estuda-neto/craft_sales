@@ -5,11 +5,11 @@ import { BaseService } from 'src/common/base/base.service';
 import { fromString, TypeUser, User } from './entities/user.entity';
 import { ApiError } from 'src/common/errors/apierror.class';
 import { UserRepository } from './repository/user.repository';
-import { InferCreationAttributes } from 'sequelize';
 import { EmailService } from './email.service';
 import { TokenService } from './token.service';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserPasswordDto } from './dto';
+import type { InferCreationAttributes } from 'sequelize';
 
 @Injectable()
 export class UserService extends BaseService<User,CreateUserDto,UpdateUserDto>{

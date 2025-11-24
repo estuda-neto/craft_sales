@@ -31,24 +31,4 @@ export class CreateUserDto {
   @IsString()
   phone: string;
 
-  @ApiProperty({ description: 'País do usuário' })
-  @IsNotEmpty()
-  @IsString()
-  country: string;
-
-  @ApiProperty({ description: 'Estado do usuário' })
-  @IsNotEmpty()
-  @IsString()
-  state: string;
-
-  @ApiProperty({ description: 'Cidade do usuário' })
-  @IsNotEmpty()
-  @IsString()
-  city: string;
-
-  @ApiProperty({ description: 'Endereço do usuário' })
-  @IsNotEmpty()
-  @IsString()
-  address: string;
-
 }
