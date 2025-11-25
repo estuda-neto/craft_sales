@@ -4,10 +4,12 @@ import { OrderController } from './order.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Order } from './entities/order.entity';
 import { OrderRepository } from './repository/order.repository';
+import { EfiService } from './efi.service';
 
 @Module({
-  imports:[SequelizeModule.forFeature([Order])],
+  imports: [SequelizeModule.forFeature([Order])],
   controllers: [OrderController],
-  providers: [OrderService, OrderRepository],
+  providers: [OrderService, OrderRepository, EfiService],
+  exports: [OrderService],
 })
-export class OrderModule {}
+export class OrderModule { }

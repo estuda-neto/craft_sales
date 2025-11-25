@@ -9,10 +9,9 @@ import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { AssessmentModule } from './modules/assessment/assessment.module';
 import { AddressModule } from './modules/address/address.module';
-import { PaymentModule } from './modules/payment/payment.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }), DatabaseModule, UserModule, CarModule, OrderModule, ItemModule, CategoryModule, ProductModule, AssessmentModule, AddressModule, PaymentModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }), DatabaseModule, UserModule, CarModule, OrderModule, ItemModule, CategoryModule, ProductModule, AssessmentModule, AddressModule],
   controllers: [],
   providers: [],
 })

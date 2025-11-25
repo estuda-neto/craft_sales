@@ -1,8 +1,9 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
-import { AfterCreate, BeforeCreate, BelongsTo, Column, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AfterCreate, BeforeCreate, BelongsTo, Column, DataType, Default, ForeignKey, HasMany, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
 import * as bcrypt from 'bcrypt';
 import { Car } from "src/modules/car/entities/car.entity";
 import { Address } from "src/modules/address/entities/address.entity";
+import { Order } from "src/modules/order/entities/order.entity";
 
 export enum TypeUser {
     CLIENTE = 'CLIENTE',
@@ -80,6 +81,10 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
 
     @BelongsTo(() => Address)
     declare address?: Address;
+
+    /** retationship 1:N -> Order*/
+    @HasMany(()=>Order)
+    declare orders?:Order[];
 
     //Listeners
     @BeforeCreate
