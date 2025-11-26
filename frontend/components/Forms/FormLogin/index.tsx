@@ -6,8 +6,8 @@ import { useId, useActionState, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { usePathname } from "next/navigation";
-import { SubButton } from "@/components/Shared/Buttons/SubButton";
 import Link from "next/link";
+import { SubButton } from "@/components/Buttons/SubButton";
 
 type TypeLoginData = {
   email: string;
