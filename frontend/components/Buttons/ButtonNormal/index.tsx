@@ -15,7 +15,7 @@ export const ButtonNormal: React.FC<ButtonNormalProps> = ({ textLabel = "Save", 
 
     return (
         <button onClick={fnClick} {...props}
-            className=" bg-(--brand-400) px-5 py-1 rounded-md transition-all duration-150 hover:bg-(--brand-500) hover:shadow-md active:scale-95 focus:outline-none">
+            className="bg-blue-500 px-5 py-1 rounded-md transition-all duration-150 hover:bg-(--brand-500) hover:shadow-md active:scale-95 focus:outline-none">
             <span className="text-amber-50 font-bold">{textLabel}</span>
         </button>
     );

@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { formSchema } from "./formregister-scheme";
 import { toast } from "react-toastify";
 import { InputCustom } from "@/components/InputCustom";
-import { SubButton } from "@/components/Shared/Buttons/SubButton";
+import { SubButton } from "@/components/Buttons/SubButton";
 
 type FormRegister = {
   name: string,
@@ -15,11 +15,7 @@ type FormRegister = {
   password: string,
   repeatPassword: string,
   phone: string,
-  country: string,
-  state: string,
-  city: string,
-  address: string,
-  typeuser: "CLIENT" | "FREELANCER",
+  typeuser: "CLIENTE" | "ARTESAO",
 };
 
 export const FormRegister = () => {
@@ -27,7 +23,7 @@ export const FormRegister = () => {
   const methods = useForm<FormRegister>({
     resolver: yupResolver(formSchema),
     mode: "onChange",
-    defaultValues: { name: "", email: "", cpf: "", password: "", repeatPassword: "", phone: "", country: "", state: "", city: "", address: "", typeuser: "CLIENT" },
+    defaultValues: { name: "", email: "", cpf: "", password: "", repeatPassword: "", phone: "", typeuser:"CLIENTE"  },
   });
 
   const handlesubmitRegister = async (data: FormRegister) => {
@@ -64,16 +60,6 @@ export const FormRegister = () => {
           <InputCustom name="phone" label="Telefone" required />
         </div>
 
-        {/* Linha 3 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <InputCustom name="country" label="País" required />
-          <InputCustom name="state" label="Estado" required />
-          <InputCustom name="city" label="Cidade" required />
-        </div>
-
-        {/* Linha 4 */}
-        <InputCustom name="address" label="Endereço" required />
-
         {/* Linha 5 - Senhas */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputCustom name="password" label="Senha" type="password" required />
@@ -86,8 +72,8 @@ export const FormRegister = () => {
             Tipo de usuário
           </label>
           <select {...methods.register("typeuser")} className="border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <option value={"CLIENT"}>Cliente</option>
-            <option value={"FREELANCER"}>Freelancer</option>
+            <option value={"CLIENTE"}>Cliente</option>
+            <option value={"ARTESAO"}>Artesão</option>
           </select>
         </div>
 

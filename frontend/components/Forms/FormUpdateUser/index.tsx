@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { SubButton } from "@/components/Shared/Buttons/SubButton";
 import { InputCustom } from "@/components/InputCustom";
 import { updateFormSchema, UpdateFormSchemaType } from "./formregister-scheme";
-import { UpdateUserInput } from "@/utils/data_types/users";
+import { UpdateUserInput } from "@/utils/datatypes/users";
 import { useSession } from "next-auth/react";
 
 export const FormUpdateUser = () => {

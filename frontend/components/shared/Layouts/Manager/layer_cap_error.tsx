@@ -11,7 +11,7 @@ type LayoutCaptureErrorProps = {
   children: ReactNode;
 };
 
-export const LayoutCaptureError: React.FC<LayoutCaptureErrorProps> = ({children}) => {
+export const LayoutCaptureError: React.FC<LayoutCaptureErrorProps> = ({ children }) => {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 

@@ -32,7 +32,7 @@ export class UserController {
   }
 
   @ApiBearerAuth('jwt')
-  @Roles('ADMIN', 'LEITOR', 'COLUNISTA')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUserDto): Promise<[number, User[]]> {
@@ -40,7 +40,7 @@ export class UserController {
   }
 
   @ApiBearerAuth('jwt')
-  @Roles('ADMIN', 'LEITOR', 'COLUNISTA')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id/password')
   async updatePassword(@Param('id') id: string, @Body() updateUserPassword: UpdateUserPasswordDto): Promise<[number, User[]]> {
@@ -58,7 +58,7 @@ export class UserController {
   }
 
   @ApiBearerAuth('jwt')
-  @Roles('ADMIN', 'LEITOR', 'COLUNISTA')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<User | null> {
@@ -105,7 +105,7 @@ export class UserController {
   }
 
   @ApiBearerAuth('jwt')
-  @Roles('ADMIN', 'LEITOR', 'COLUNISTA')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id/photo')
   @ApiConsumes('multipart/form-data')

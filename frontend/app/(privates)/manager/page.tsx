@@ -1,77 +1,20 @@
 import Link from "next/link";
 import { FolderOpenDotIcon, MessageCircleMoreIcon, ShieldIcon, UserCog2Icon } from "lucide-react";
-import { Loader } from "@/components/Shared/Loader";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { Session } from "@/utils/data_types/session";
-import { JobsGrid } from "@/components/ProjectsGrid";
-import { ProjectsDataOut } from "@/utils/data_types/projects";
-import { ProposalsDataOut } from "@/utils/data_types/proposals";
-import { UsersDataOut } from "@/utils/data_types/users";
+import { Session } from "@/utils/datatypes/session";
 import Image from "next/image";
-
-async function getProjectsData(): Promise<ProjectsDataOut | null> {
-  try {
-    const response = await fetch(`http://localhost:3000/projects/reports`, {
-      method: "GET",
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) return null;
-    const data: ProjectsDataOut = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching portfolio data:", error);
-    return null;
-  }
-}
-
-async function getProposalsData(): Promise<ProposalsDataOut | null> {
-  try {
-    const response = await fetch(`http://localhost:3000/proposals/reports`, {
-      method: "GET",
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) return null;
-    const data: ProposalsDataOut = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching portfolio data:", error);
-    return null;
-  }
-}
-
-async function getusersData(): Promise<UsersDataOut | null> {
-  try {
-    const response = await fetch(`http://localhost:3000/users/reports`, {
-      method: "GET",
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) return null;
-    const data: UsersDataOut = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching portfolio data:", error);
-    return null;
-  }
-}
+import { Loader } from "@/components/shared/Loader";
 
 export default async function Manager() {
   const isLoading = false;
   const session: Session | null = await getServerSession(authOptions);
   if (!session) redirect("/");
-  const projectData = await getProjectsData();
-  const proposalData = await getProposalsData();
-  const getUserData = await getusersData();
+
+  // const projectData = await getProjectsData();
+  // const proposalData = await getProposalsData();
+  // const getUserData = await getusersData();
 
   if (isLoading) {
     return (<div className="w-full h-full flex justify-center items-center"><Loader /></div>);
@@ -99,10 +42,10 @@ export default async function Manager() {
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"> {[
-          { value: projectData ? projectData.totalProjects : "0", label: "Projetos", icon: <FolderOpenDotIcon size={28} />, link: "/projects" },
+          { value: "0", label: "Projetos", icon: <FolderOpenDotIcon size={28} />, link: "/projects" },
           { value: "5", label: "Tecnologias", icon: <ShieldIcon size={28} />, link: "/" },
-          { value: proposalData ? proposalData.totalProposals : "0", label: "Propostas", icon: <MessageCircleMoreIcon size={28} />, link: "/" },
-          { value: getUserData ? getUserData.totalUsers : "0", label: "Usuarios Ativos", icon: <UserCog2Icon size={28} />, link: "/" },
+          { value: "0", label: "Propostas", icon: <MessageCircleMoreIcon size={28} />, link: "/" },
+          { value: "0", label: "Usuarios Ativos", icon: <UserCog2Icon size={28} />, link: "/" },
         ].map((card, index) => (
           <Link href={card.link} key={index} className="bg-white rounded-2xl p-6 flex justify-between items-center shadow-md hover:bg-(--brand-400) transition-colors duration-300 cursor-pointer group">
             <div>
@@ -120,7 +63,7 @@ export default async function Manager() {
 
         {/* Conteúdo */}
         <div className="mt-8 bg-white rounded-2xl p-6 shadow-md overflow-auto">
-          <JobsGrid />
+          conteudo
         </div>
       </div>
     </div>

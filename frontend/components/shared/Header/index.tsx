@@ -39,7 +39,7 @@ export const Header: React.FC = () => {
   }, [open]);
 
   return (
-    <header className="w-full px-5 py-1.5 bg-(--bg-header-color) text-(--text-color) shadow-[rgba(0,0,0,0.25)_0px_54px_55px,rgba(0,0,0,0.12)_0px_-12px_30px,rgba(0,0,0,0.12)_0px_4px_6px,rgba(0,0,0,0.17)_0px_12px_13px,rgba(0,0,0,0.09)_0px_-3px_5px] relative z-40">
+    <header className="w-full px-5 py-1.5 bg-(--bg-color) text-(--text-color) shadow-[rgba(0,0,0,0.25)_0px_54px_55px,rgba(0,0,0,0.12)_0px_-12px_30px,rgba(0,0,0,0.12)_0px_4px_6px,rgba(0,0,0,0.17)_0px_12px_13px,rgba(0,0,0,0.09)_0px_-3px_5px] relative z-40">
       <div className="flex items-center justify-between lg:py-2">
         {/* Logo */}
         <div className="flex items-center px-[5%] mr-auto">
@@ -70,7 +70,7 @@ export const Header: React.FC = () => {
 
       {/* Backdrop Mobile */}
       {open && isMobile && (
-        <div className="fixed inset-0 bg-black/35 z-49" onClick={() => setOpen(false)}/>
+        <div className="fixed inset-0 bg-black/35 z-49" onClick={() => setOpen(false)} />
       )}
 
       {/* Painel Mobile */}

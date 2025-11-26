@@ -1,7 +1,7 @@
 "use client";
 
 import { ProjectCard } from "@/components/Cards/ProjectCard";
-import { ProjectOutput } from "@/utils/data_types/projects";
+import { ProjectOutput } from "@/utils/datatypes/projects";
 import { useState } from "react";
 
 type ContainerProjectsCardsProps = {

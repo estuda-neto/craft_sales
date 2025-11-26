@@ -1,9 +1,9 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
 import { AfterCreate, BeforeCreate, BelongsTo, Column, DataType, Default, ForeignKey, HasMany, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
-import * as bcrypt from 'bcrypt';
 import { Car } from "src/modules/car/entities/car.entity";
 import { Address } from "src/modules/address/entities/address.entity";
 import { Order } from "src/modules/order/entities/order.entity";
+import * as bcrypt from 'bcrypt';
 
 export enum TypeUser {
     CLIENTE = 'CLIENTE',

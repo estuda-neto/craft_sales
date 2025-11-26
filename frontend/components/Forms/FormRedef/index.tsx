@@ -4,8 +4,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { redirect } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { formSchema } from './formredef-scheme';
-import { IFormInputRedem, sendRedemServerSideProps } from '../../../utils/actions';
 import { InputCustom } from '@/components/InputCustom';
+import { IFormInputRedem, sendRedemServerSideProps } from '@/utils/actions';
 
 export const FormRedef = () => {
   const methods = useForm<IFormInputRedem>({ resolver: yupResolver(formSchema) , mode: 'onChange', defaultValues: { token: '', password: '', confirpassword: '' } });

@@ -1,8 +1,10 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsIn, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
+import { TypeUser } from '../entities/user.entity';
 
 export class CreateUserDto {
-  @ApiProperty({ description: 'Nome completo do usuário' })
+  @ApiProperty({ description: 'Nome do usuário' })
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -30,5 +32,10 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   phone: string;
+
+  @ApiProperty({ description: 'Tipo de usuário', enum: [TypeUser.CLIENTE, TypeUser.ARTESAO] })
+  @Transform(({ value }) => value.toUpperCase())
+  @IsIn([TypeUser.CLIENTE, TypeUser.ARTESAO], { message: 'typeuser deve ser "CLIENTE" ou "ARTESAO"' })
+  typeuser: TypeUser;
 
 }

@@ -91,7 +91,7 @@ constructor(private readonly userRepository: UserRepository, private readonly em
 
   async listarPaginado(limit: number, offset: number): Promise<{ rows: User[]; count: number }> {
     const objectWithUsuarios = await this.userRepository.findWithPagination(limit, offset);
-    if (!objectWithUsuarios) throw new ApiError('Erro interno: o recurso não pôde ser recuperado!', 400);
+    if (!objectWithUsuarios) throw new ApiError('the resource could not be retrieved!', 400);
     return objectWithUsuarios;
   }
 
@@ -118,7 +118,7 @@ constructor(private readonly userRepository: UserRepository, private readonly em
 
   async addPhoto(id: string, newImages: string) {
     const user = await this.userRepository.getInstanceOfUserById(id);
-    if (!user) throw new ApiError('Projeto não encontrado', 404);
+    if (!user) throw new ApiError('User not found', 404);
     user.photo = newImages;
     await user.save();
     return user;
