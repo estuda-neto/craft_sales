@@ -43,7 +43,7 @@ export default function RootLayout({ children, cookies }: RootLayoutProps) {
         <MenuProvider>
           <ManagerLayout>
             <Header />
-            <ToastContainer />
+            <ToastContainer className="bg-gray-100" />
             <MenuAside />
             <LayoutCaptureError>
               {children}

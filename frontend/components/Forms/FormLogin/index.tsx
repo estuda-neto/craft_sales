@@ -70,7 +70,7 @@ export const FormLogin: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="w-full flex flex-col lg:flex-row lg:justify-center items-center lg:items-start gap-3 lg:gap-3">
+    <form onSubmit={handleSubmit(onSubmitForm)} className="w-full flex flex-col items-center gap-3 lg:gap-3">
       {/* Email */}
       <div className="flex flex-col lg:flex-row lg:items-center max-h-[35px] gap-2">
         <label htmlFor={idEmail} className="text-sm font-semibold text-(--text-color)">

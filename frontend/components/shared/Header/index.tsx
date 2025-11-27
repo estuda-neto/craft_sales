@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { NavBar } from "../Navbar";
 import { FormLogin } from "@/components/Forms/FormLogin";
 import { ToggleButtonTheme } from "@/components/Buttons/ToggleButtonTheme";
+import { FormLoginWrapper } from "@/components/Forms/FormLogin/formwrapeer";
 
 export const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -55,7 +56,7 @@ export const Header: React.FC = () => {
           {/* Área Desktop: tema + login */}
           <div className="hidden lg:flex items-center gap-3">
             <ToggleButtonTheme />
-            <FormLogin />
+            <FormLoginWrapper />
           </div>
 
           {/* Botão Mobile */}
