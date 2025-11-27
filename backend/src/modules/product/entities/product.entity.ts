@@ -15,6 +15,25 @@ export class Product extends Model<InferAttributes<Product>, InferCreationAttrib
     @Column(DataType.STRING)
     declare name: string;
 
+    @Column(DataType.FLOAT)
+    declare price: number;
+
+    @Column(DataType.INTEGER)
+    declare quantStock: number;
+
+    @Column(DataType.BOOLEAN)
+    declare onSale: CreationOptional<boolean>;
+
+    @Column(DataType.FLOAT)
+    declare discountpercentage: CreationOptional<number>;
+
+    @Column(DataType.STRING)
+    declare image: CreationOptional<string>;
+
+    @Column(DataType.TEXT)
+    declare description: string;
+
+
     //relationships
 
     /**relationship 1:N Item */
@@ -26,6 +45,6 @@ export class Product extends Model<InferAttributes<Product>, InferCreationAttrib
     declare assessments?: Assessment[];
 
     /**relationships N:N Category */
-    @BelongsToMany(()=>Category,()=>ProductCategory)
-    declare categories?:Category[];
+    @BelongsToMany(() => Category, () => ProductCategory)
+    declare categories?: Category[];
 }
