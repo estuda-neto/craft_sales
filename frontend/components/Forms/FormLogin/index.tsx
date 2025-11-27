@@ -9,6 +9,9 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { SubButton } from "@/components/Buttons/SubButton";
 
+// importa as rotas bloqueadas
+import { hiddenPaths } from "./hidenpath";
+
 type TypeLoginData = {
   email: string;
   password: string;
@@ -16,7 +19,6 @@ type TypeLoginData = {
 
 export const FormLogin: React.FC = () => {
   const pathname = usePathname();
-  const hiddenPaths = ["/manager", "/portifolios", "/messages", "/projects", "/proposals", "/jobs","/users"];
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -24,12 +26,17 @@ export const FormLogin: React.FC = () => {
   const idEmail = useId();
   const idPassword = useId();
 
-  const { register, handleSubmit, formState: { errors } } = useForm<TypeLoginData>();
+  const { register, handleSubmit, formState: { errors } } =
+    useForm<TypeLoginData>();
 
   const [state, setState, isPending] = useActionState(
     async (prevState: any, data: TypeLoginData) => {
       try {
-        const response = await signIn("credentials", { redirect: false, ...data, callbackUrl: "/manager" });
+        const response = await signIn("credentials", {
+          redirect: false,
+          ...data,
+          callbackUrl: "/manager",
+        });
 
         if (response?.status === 401) {
           toast.error("Credenciais inválidas");
@@ -42,7 +49,9 @@ export const FormLogin: React.FC = () => {
 
         return { success: true };
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Erro ao autenticar");
+        toast.error(
+          error instanceof Error ? error.message : "Erro ao autenticar"
+        );
         return { success: false };
       }
     },
@@ -70,15 +79,25 @@ export const FormLogin: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="w-full flex flex-col items-center gap-3 lg:gap-3">
+    <form
+      onSubmit={handleSubmit(onSubmitForm)}
+      className="w-full flex flex-col items-center gap-3 lg:gap-3"
+    >
       {/* Email */}
       <div className="flex flex-col lg:flex-row lg:items-center max-h-[35px] gap-2">
         <label htmlFor={idEmail} className="text-sm font-semibold text-(--text-color)">
           e-mail:
         </label>
-        <input id={idEmail} type="text" {...register("email", { required: "Este campo é obrigatório" })} className="min-h-[30px] max-w-[120px] lg:max-w-[120px] text-(--text-color) px-3 border border-gray-300 rounded-full outline-none text-sm bg-(--bg-color) caret-(--text-color) text-center transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 w-full lg:w-auto" />
+        <input
+          id={idEmail}
+          type="text"
+          {...register("email", { required: "Este campo é obrigatório" })}
+          className="min-h-[30px] max-w-[120px] lg:max-w-[120px] text-(--text-color) px-3 border border-gray-300 rounded-full outline-none text-sm bg-(--bg-color) caret-(--text-color) text-center transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 w-full lg:w-auto"
+        />
         {errors.email && (
-          <span className="text-red-600 text-sm mt-2">{errors.email.message}</span>
+          <span className="text-red-600 text-sm mt-2">
+            {errors.email.message}
+          </span>
         )}
       </div>
 
@@ -87,7 +106,9 @@ export const FormLogin: React.FC = () => {
         <label htmlFor={idPassword} className="text-sm font-semibold text-(--text-color)">
           password:
         </label>
-        <input id={idPassword} type="password"
+        <input
+          id={idPassword}
+          type="password"
           {...register("password", { required: "Este campo é obrigatório" })}
           className="min-h-[30px] max-w-[120px] lg:max-w-[120px] text-(--text-color) px-3 border border-gray-300 rounded-full outline-none text-sm bg-(--bg-color) caret-(--text-color) text-center transition-all duration-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 w-full lg:w-auto"
         />
@@ -100,7 +121,13 @@ export const FormLogin: React.FC = () => {
 
       {/* Submit */}
       <div className="mt-2 lg:mt-0">
-        <SubButton type="submit" label={isPending ? "Entrando..." : "Entrar"} disabled={isPending} className={`w-full lg:w-auto justify-center ${isPending ? "opacity-70 cursor-not-allowed" : ""}`} />
+        <SubButton
+          type="submit"
+          label={isPending ? "Entrando..." : "Entrar"}
+          disabled={isPending}
+          className={`w-full lg:w-auto justify-center ${isPending ? "opacity-70 cursor-not-allowed" : ""
+            }`}
+        />
       </div>
 
       {/* Forgot password */}

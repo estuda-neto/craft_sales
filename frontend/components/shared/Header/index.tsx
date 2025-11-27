@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react";
 import { NavBar } from "../Navbar";
 import { FormLogin } from "@/components/Forms/FormLogin";
 import { ToggleButtonTheme } from "@/components/Buttons/ToggleButtonTheme";
-import { FormLoginWrapper } from "@/components/Forms/FormLogin/formwrapeer";
+import { FormLoginWrapper } from "@/components/Forms/FormLogin/formwraper";
 
 export const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
