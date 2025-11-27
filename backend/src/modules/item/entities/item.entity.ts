@@ -4,6 +4,8 @@ import { Car } from "src/modules/car/entities/car.entity";
 import { Order } from "src/modules/order/entities/order.entity";
 import { Product } from "src/modules/product/entities/product.entity";
 
+export enum TypeOrigin { CAR = 'CAR', PEDIDO = 'PEDIDO' };
+
 @Table({ tableName: "tb_items", timestamps: true })
 export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<Item>> {
     @PrimaryKey
@@ -11,14 +13,11 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
     @Column({ type: DataType.UUID })
     declare itemId: CreationOptional<string>;
 
-    @Column(DataType.STRING)
-    declare name: string;
-
     @Column(DataType.STRING) //variação tamanho
     declare sizeVariation: string;
 
-    @Column(DataType.STRING) //tipo de origem
-    declare typeOrigin: string;
+    @Column(DataType.ENUM(...Object.values(TypeOrigin)))
+    declare typeOrigin: TypeOrigin;
 
     @Column(DataType.INTEGER)
     declare quantProduct: number;
@@ -28,6 +27,7 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
 
     @Column(DataType.FLOAT)
     declare subtotal: number;
+
 
     //relationships
 
@@ -47,7 +47,11 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
     @BelongsTo(() => Order)
     declare Order?: Order;
 
-    /**relationship 1:1 Product */
-    @HasOne(() => Product)
+    /** relationship N:1 Product */
+    @ForeignKey(() => Product)
+    @Column(DataType.UUID)
+    declare productId: string;
+
+    @BelongsTo(() => Product)
     declare product?: Product;
 }

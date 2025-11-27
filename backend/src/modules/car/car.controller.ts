@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CarService } from './car.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
+import { RegisterItemToCarDto } from './dto/register_item-car.dto';
 
 @Controller('cars')
 export class CarController {
@@ -10,6 +11,11 @@ export class CarController {
   @Post()
   async create(@Body() createCarDto: CreateCarDto) {
     return await this.carService.create(createCarDto);
+  }
+
+  @Post(':id/items')
+  async addProductToCar(@Body() registerItemToCarDto: RegisterItemToCarDto) {
+    return await this.carService.registerItem(registerItemToCarDto);
   }
 
   @Get()

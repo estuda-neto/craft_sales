@@ -27,4 +27,10 @@ export class ItemRepository extends BaseRepository<Item> {
   async getInstanceById(id: string): Promise<Item | null> {
     return  await this.itemModel.findByPk(id);
   }
+
+  async findOneByCarIdAndItemId(carId: string, itemId: string): Promise<Item | null> {
+  return this.itemModel.findOne({
+    where: { carId, itemId }
+  });
+}
 }

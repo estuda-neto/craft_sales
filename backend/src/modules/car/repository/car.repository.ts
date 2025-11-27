@@ -19,12 +19,16 @@ export class CarRepository extends BaseRepository<Car> {
         return await this.findAll();
     }
 
-    async findById(id: string): Promise<Partial<Car> | null> {
-        const result = await this.carModel.findByPk(id);
-        return result?.get({ plain: true }) ?? null;
+    async findById(carId: string): Promise<Car | null> {
+        const result = await this.carModel.findByPk(carId);
+        return result?.get({ plain: true }) as Car ?? null;
     }
 
     async getInstanceById(id: string): Promise<Car | null> {
         return await this.carModel.findByPk(id);
+    }
+
+    async findByIdWithItems(carId: string): Promise<Car | null> {
+        return await this.carModel.findByPk(carId, { include: [{ association: 'items', include: [{ association: 'product' }] }] });
     }
 }
