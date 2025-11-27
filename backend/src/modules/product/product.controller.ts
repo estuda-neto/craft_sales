@@ -5,7 +5,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) { }
 
   @Post()
   async create(@Body() createProductDto: CreateProductDto) {
@@ -30,5 +30,25 @@ export class ProductController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.productService.remove(id);
+  }
+
+  @Get('final-price')
+  async findAllWithFinalPrice() {
+    return await this.productService.findAllWithFinalPrice();
+  }
+
+  @Get(':id/final-price')
+  async findOneWithFinalPrice(@Param('id') id: string) {
+    return await this.productService.findOneWithFinalPrice(id);
+  }
+
+  @Get('filter/on-sale')
+  async findProductsOnSale() {
+    return await this.productService.findProductsOnSale();
+  }
+
+  @Patch(':id/stock')
+  async updateStock(@Param('id') id: string, @Body('quantity') quantity: number) {
+    return await this.productService.updateStock(id, quantity);
   }
 }

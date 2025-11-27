@@ -19,14 +19,18 @@ export class ProductRepository extends BaseRepository<Product> {
         return await this.findAll();
     }
 
-    async findById(productId: string): Promise<Partial<Product> | null> {
+    async findById(productId: string): Promise<Product | null> {
         const product = await this.productModel.findByPk(productId);
         if (!product) return null;
-        return product.get({ plain: true }) as Partial<Product>;
+        return product?.get({ plain: true }) as Product ?? null;
     }
 
     async getInstanceById(id: string): Promise<Product | null> {
         return await this.productModel.findByPk(id);
+    }
+
+    async findOnSale(): Promise<Product[]> {
+        return this.productModel.findAll({ where: { onSale: true } });
     }
 
 }

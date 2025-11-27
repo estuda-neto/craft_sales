@@ -22,4 +22,46 @@ export class ProductService extends BaseService<Product, CreateProductDto, Updat
     if (!result) throw new ApiError('The resource could not be retrieved', 400);
     return result;
   }
+
+  // Calcular preço final com desconto
+  private calculateFinalPrice(product: Product) {
+    if (product.onSale && product.discountpercentage > 0) {
+      return product.price - (product.price * product.discountpercentage);
+    }
+    return product.price;
+  }
+
+  // Retorna todos os produtos já com preço final
+  async findAllWithFinalPrice() {
+    const products = await this.productRepository.findAll();
+    return products.map(p => ({
+      ...p.get({ plain: true }),
+      finalPrice: this.calculateFinalPrice(p)
+    }));
+  }
+
+  // Retorna um único produto já com preço final
+  async findOneWithFinalPrice(id: string) {
+    const product = await this.productRepository.findById(id);
+    if (!product) throw new ApiError("Product not found", 404);
+    product.price = this.calculateFinalPrice(product);
+
+    return product;
+  }
+
+  // Apenas produtos em promoção
+  async findProductsOnSale() {
+    const products = await this.productRepository.findOnSale();
+    return products.map(p => ({ ...p.get({ plain: true }), finalPrice: this.calculateFinalPrice(p) }));
+  }
+
+  // Atualizar estoque
+  async updateStock(productId: string, quantity: number) {
+    const product = await this.productRepository.getInstanceById(productId);
+    if (!product) throw new ApiError("Product not found", 404);
+
+    product.quantStock = quantity;
+    await product.save();
+    return product;
+  }
 }

@@ -33,6 +33,9 @@ export class Product extends Model<InferAttributes<Product>, InferCreationAttrib
     @Column(DataType.TEXT)
     declare description: string;
 
+     @Column(DataType.FLOAT)
+    declare finalPrice: CreationOptional<number>;
+
 
     //relationships
 
