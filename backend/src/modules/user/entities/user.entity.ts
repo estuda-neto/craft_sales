@@ -10,6 +10,17 @@ export enum TypeUser {
     ADMIN = 'ADMIN',
     ARTESAO = 'ARTESAO',
 }
+export enum TypeArtisan {
+    CERÂMICA = 'CERÂMICA',
+    MADEIRA = 'ADMIN',
+    TECIDOS = 'ARTESAO',
+    FIBRA = 'ARTESAO',
+    METAL = 'METAL',
+    RECICLÁVEIS = 'RECICLÁVEIS',
+    PINTURA = 'PINTURA',
+    ESCILTURA = 'ESCULTURA',
+    PEDRA_SABÃO = 'PEDRA_SABÃO',
+}
 export function fromString(value: string): TypeUser {
     switch (value) {
         case 'CLIENTE':
@@ -68,6 +79,15 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     @Column(DataType.BOOLEAN)
     declare checked: CreationOptional<boolean>;
 
+    @Column(DataType.STRING)
+    declare craftsmanRegistration: CreationOptional<string>;
+
+    @Column(DataType.STRING)
+    declare numberWalletCICAB: CreationOptional<string>;
+
+    @Column(DataType.ENUM(...Object.values(TypeArtisan)))
+    declare artisanType: CreationOptional<TypeArtisan>;
+
     //relationships - no use CreationOptional, sequelize ja trata como atributo de relacionamento. opcional
 
     /** retationship 1:1 -> Car*/
@@ -83,8 +103,8 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     declare address?: Address;
 
     /** retationship 1:N -> Order*/
-    @HasMany(()=>Order)
-    declare orders?:Order[];
+    @HasMany(() => Order)
+    declare orders?: Order[];
 
     //Listeners
     @BeforeCreate

@@ -3,10 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Match } from '../utils/decorators/validators/match.decorator';
 
 export class ResetPasswordDto {
-  @ApiProperty({
-    example: 'dfhsgfdsgfjdsgfhj@3fdwsf123',
-    description: 'Token de redefinição',
-  })
+  @ApiProperty({example: 'dfhsgfdsgfjdsgfhj@3fdwsf123',description: 'Token de redefinição'})
   @IsString()
   token: string;
 

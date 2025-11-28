@@ -29,7 +29,7 @@ export class CarService extends BaseService<Car, CreateCarDto, UpdateCarDto> {
 
   //TODO: test
   async registerItem(registerItemToCarDto: RegisterItemToCarDto): Promise<Car> {
-    const { itemId, carId, productId, quantProduct, sizeVariation } = registerItemToCarDto;
+    const { itemId, carId, productId, quantProduct, price, sizeVariation, orderId } = registerItemToCarDto;
 
     // verifica se o carrinho existe
     const car = await this.carRepository.findById(carId);
@@ -46,8 +46,7 @@ export class CarService extends BaseService<Car, CreateCarDto, UpdateCarDto> {
       return carUpdated;
     }
 
-    // cria novo item no carrinho, COM ORIGEM CAR
-    const newItem: Partial<Item> = { sizeVariation, typeOrigin: TypeOrigin.CAR, quantProduct, carId, productId };
+    const newItem = { sizeVariation, quantProduct, price, carId, orderId, productId } as InferCreationAttributes<Item>;
 
     await this.itemService.create(newItem);
     const carUpdated = await this.carRepository.findByIdWithItems(carId);

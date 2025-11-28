@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import {IsNumber, IsOptional, IsString } from "class-validator";
+import {IsEnum, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { TypeArtisan } from "../entities/user.entity";
 
 export class UpdateUserDto {
 
@@ -18,28 +19,33 @@ export class UpdateUserDto {
   @IsString()
   bio?: string;
 
-  @ApiPropertyOptional({ description: "User's country" })
-  @IsOptional()
-  @IsString()
-  country?: string;
-
-  @ApiPropertyOptional({ description: "User's state" })
-  @IsOptional()
-  @IsString()
-  state?: string;
-
-  @ApiPropertyOptional({ description: "User's city" })
-  @IsOptional()
-  @IsString()
-  city?: string;
-
-  @ApiPropertyOptional({ description: "User's address" })
-  @IsOptional()
-  @IsString()
-  address?: string;
-
   @ApiPropertyOptional({ description: "Pontuação score" })
   @IsOptional()
   @IsNumber()
   score?: number;
+
+   @ApiPropertyOptional({ description: "User photo URL" })
+  @IsOptional()
+  @IsString()
+  photo?: string;
+
+  @ApiPropertyOptional({ description: "AddressId (UUID)" })
+  @IsOptional()
+  @IsUUID()
+  addressId?: string;
+
+  @ApiPropertyOptional({ description: "Craftsman registration code" })
+  @IsOptional()
+  @IsString()
+  craftsmanRegistration?: string;
+
+  @ApiPropertyOptional({ description: "CICAB wallet number" })
+  @IsOptional()
+  @IsString()
+  numberWalletCICAB?: string;
+
+  @ApiPropertyOptional({ description: "Type of artisan (if user is ARTESAO)", enum: TypeArtisan})
+  @IsOptional()
+  @IsEnum(TypeArtisan)
+  artisanType?: TypeArtisan;
 }

@@ -9,8 +9,11 @@ export class Assessment extends Model<InferAttributes<Assessment>, InferCreation
     @Column({ type: DataType.UUID })
     declare assessmentId: CreationOptional<string>;
 
-    @Column(DataType.STRING)
-    declare name: string;
+    @Column(DataType.FLOAT)
+    declare rating: number;
+
+     @Column(DataType.TEXT)
+    declare description: string;
 
     //relationships
 

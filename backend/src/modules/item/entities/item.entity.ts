@@ -1,5 +1,5 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
-import { BelongsTo, Column, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { BeforeCreate, BelongsTo, Column, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { Car } from "src/modules/car/entities/car.entity";
 import { Order } from "src/modules/order/entities/order.entity";
 import { Product } from "src/modules/product/entities/product.entity";
@@ -13,11 +13,11 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
     @Column({ type: DataType.UUID })
     declare itemId: CreationOptional<string>;
 
-    @Column(DataType.STRING) //variação tamanho
-    declare sizeVariation: string;
+    @Column(DataType.STRING) 
+    declare sizeVariation: string; //variação tamanho
 
     @Column(DataType.ENUM(...Object.values(TypeOrigin)))
-    declare typeOrigin: TypeOrigin;
+    declare typeOrigin: CreationOptional<TypeOrigin>;
 
     @Column(DataType.INTEGER)
     declare quantProduct: number;
@@ -26,7 +26,7 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
     declare price: number;
 
     @Column(DataType.FLOAT)
-    declare subtotal: number;
+    declare subtotal: CreationOptional<number>;
 
 
     //relationships
@@ -42,7 +42,7 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
     /** relationship N:1 Order */
     @ForeignKey(() => Order)
     @Column(DataType.UUID)
-    declare orderId: string;
+    declare orderId: CreationOptional<string>;
 
     @BelongsTo(() => Order)
     declare Order?: Order;
@@ -54,4 +54,12 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
 
     @BelongsTo(() => Product)
     declare product?: Product;
+
+    //Listeners
+    @BeforeCreate
+    static async set(instance: Item) {
+        instance.typeOrigin = TypeOrigin.CAR;
+
+    }
+
 }

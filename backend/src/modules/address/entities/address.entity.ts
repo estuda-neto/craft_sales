@@ -41,7 +41,10 @@ export class Address extends Model<InferAttributes<Address>, InferCreationAttrib
     declare addressId: CreationOptional<string>;
 
     @Column(DataType.STRING)
-    declare country: CreationOptional<string>;
+    declare country: string;
+
+    @Column(DataType.STRING)
+    declare CEP: string;
 
     @Column({ type: DataType.ENUM(...Object.values(BrazilStates)), allowNull: false })
     declare state: BrazilStates;
