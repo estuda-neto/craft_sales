@@ -7,6 +7,7 @@ import { formSchema } from "./formregister-scheme";
 import { toast } from "react-toastify";
 import { InputCustom } from "@/src/components/InputCustom";
 import { SubButton } from "@/src/components/Buttons/SubButton";
+import { TypeUser } from "@/src/utils/datatypes/users";
 
 type FormRegister = {
   name: string,
@@ -15,7 +16,8 @@ type FormRegister = {
   password: string,
   repeatPassword: string,
   phone: string,
-  typeuser: "CLIENTE" | "ARTESAO",
+  dateOfBirth: string,
+  typeuser: TypeUser,
 };
 
 export const FormRegister = () => {
@@ -23,7 +25,7 @@ export const FormRegister = () => {
   const methods = useForm<FormRegister>({
     resolver: yupResolver(formSchema),
     mode: "onChange",
-    defaultValues: { name: "", email: "", cpf: "", password: "", repeatPassword: "", phone: "", typeuser:"CLIENTE"  },
+    defaultValues: { name: "", email: "", cpf: "", password: "", repeatPassword: "", phone: "", dateOfBirth: "", typeuser: TypeUser.CLIENTE },
   });
 
   const handlesubmitRegister = async (data: FormRegister) => {
@@ -38,7 +40,7 @@ export const FormRegister = () => {
         toast.success("Usuário criado com sucesso, 1 seg e será redirecionado!");
         router.push("/");
       } else {
-        toast.error(response.status === 400? "Email já existe na aplicação, prossiga para redefinição de senha" : "Erro ao registrar");
+        toast.error(response.status === 400 ? "Email já existe na aplicação, prossiga para redefinição de senha" : "Erro ao registrar");
       }
     } catch (error) {
       throw new Error("Ocorreu um erro de comunicação no Next...");
@@ -58,6 +60,7 @@ export const FormRegister = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputCustom name="cpf" label="CPF" required />
           <InputCustom name="phone" label="Telefone" required />
+          <InputCustom name="dateOfBirth" label="Data de Nascimento" type="date" required/>
         </div>
 
         {/* Linha 5 - Senhas */}

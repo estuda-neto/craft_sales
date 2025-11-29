@@ -26,7 +26,6 @@ export function fromString(value: string): TypeUser {
             throw new Error('type user invalid.');
     }
 }
-
 export enum TypeUserStatus {
     ACTIVE = 'ACTIVE',
     SUSPENDED = 'SUSPENDED',
@@ -38,6 +37,7 @@ export interface User {
     name: string;
     email: string;
     cpf: string;
+    dateOfBirth: Date
     password: string;
     phone: string;
     photo?: string;

@@ -55,6 +55,9 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     @Column({ type: DataType.STRING, unique: true })
     declare cpf: string;
 
+    @Column({ type: DataType.DATEONLY })
+    declare dateOfBirth: Date;
+
     @Column(DataType.STRING)
     declare password: string;
 

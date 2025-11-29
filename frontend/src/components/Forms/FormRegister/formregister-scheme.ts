@@ -1,3 +1,4 @@
+import { TypeUser } from "@/src/utils/datatypes/users";
 import * as yup from "yup";
 
 export const formSchema = yup.object({
@@ -7,7 +8,8 @@ export const formSchema = yup.object({
   password: yup.string().required("A senha é obrigatória").min(6, "A senha deve ter pelo menos 6 caracteres"),
   repeatPassword: yup.string().required("A confirmação de senha é obrigatória").oneOf([yup.ref("password")], "As senhas devem ser iguais"),
   phone: yup.string().required("O telefone é obrigatório").matches(/^\+?\d{10,15}$/, "Número de telefone inválido"),
-  typeuser: yup.mixed<"CLIENTE" | "ARTESAO">().oneOf(["CLIENTE", "ARTESAO"], "Tipo de usuário inválido").required("O tipo de usuário é obrigatório"),
+  dateOfBirth: yup.string().required("A data de nascimento é obrigatória").matches(/^\d{4}-\d{2}-\d{2}$/, "Data inválida (use YYYY-MM-DD)"),
+  typeuser: yup.mixed<TypeUser>().oneOf([TypeUser.CLIENTE, TypeUser.ARTESAO], "Tipo de usuário inválido").required("O tipo de usuário é obrigatório"),
 
 });
 
