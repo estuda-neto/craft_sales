@@ -5,12 +5,12 @@ import { Session } from "@/src/utils/datatypes/session";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-interface Props { params: { portfolioId: string }; };
+interface Props { params: { userId: string }; };
 export default async function ProfileEdit({ params }: Props) {
     const isLoading = false;
     const session: Session | null = await getServerSession(authOptions);
     if (!session) redirect("/");
-    const { portfolioId } = await params;
+    const { userId } = await params;
 
     if (isLoading) {
         return (<div className="w-full h-full flex justify-center items-center"><Loader /></div>);

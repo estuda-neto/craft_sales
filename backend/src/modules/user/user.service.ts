@@ -10,10 +10,13 @@ import { TokenService } from './token.service';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserPasswordDto } from './dto';
 import type { InferCreationAttributes } from 'sequelize';
+import { AddressService } from '../address/address.service';
 
 @Injectable()
-export class UserService extends BaseService<User,CreateUserDto,UpdateUserDto>{
-constructor(private readonly userRepository: UserRepository, private readonly emailService: EmailService, private readonly tokenService: TokenService) {
+export class UserService extends BaseService<User, CreateUserDto, UpdateUserDto> {
+  constructor(private readonly userRepository: UserRepository, private readonly emailService: EmailService, private readonly tokenService: TokenService,
+    private readonly addressService: AddressService
+  ) {
     super(userRepository);
   }
 
@@ -120,6 +123,28 @@ constructor(private readonly userRepository: UserRepository, private readonly em
     if (!user) throw new ApiError('User not found', 404);
     user.photo = newImages;
     await user.save();
+    return user;
+  }
+
+  async findByIdWithAddress(id: string): Promise<User> {
+    const user = await this.findOne(id);
+    if (!user) throw new ApiError('User not found', 404);
+
+    const userWithAddresses = await this.userRepository.findByIdWithAddresses(id);
+    if (!userWithAddresses) throw new ApiError('User not found', 404);
+
+    return userWithAddresses;
+  }
+
+  async addAddress(userId: string, addressId: string): Promise<User> {
+    // 1 - verifica se o endereço existeconst
+    const address = await this.addressService.findOne(addressId);
+    if (!address) throw new ApiError('Address not found,association not possible', 404);
+    // 2 - associa ao usuário
+
+    const user = await this.userRepository.addAddressToUser(userId, addressId);
+    if (!user) throw new ApiError('User not possible association with Adress', 400);
+
     return user;
   }
 }

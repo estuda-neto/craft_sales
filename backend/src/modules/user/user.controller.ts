@@ -128,4 +128,20 @@ export class UserController {
     return await this.usersService.addPhoto(id, filePath);
   }
 
+  @ApiBearerAuth('jwt')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get(':id/addresses')
+  async getUserAddresses(@Param('id') id: string) {
+    return await this.usersService.findByIdWithAddress(id);
+  }
+
+  @ApiBearerAuth('jwt')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Post(':userId/addresses/:addressId')
+  async addAddressToUser(@Param('userId') userId: string, @Param('addressId') addressId: string) {
+    return await this.usersService.addAddress(userId, addressId);
+  }
+
 }

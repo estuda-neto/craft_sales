@@ -8,9 +8,10 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
+import { AddressModule } from '../address/address.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([User])],
+  imports: [SequelizeModule.forFeature([User]), AddressModule],
   controllers: [UserController, AuthController],
   providers: [UserService, UserRepository, TokenService, EmailService, AuthService],
   exports: [UserService]

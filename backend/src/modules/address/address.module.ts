@@ -9,5 +9,6 @@ import { AddressRepository } from './repository/address.repository';
   imports: [SequelizeModule.forFeature([Address])],
   controllers: [AddressController],
   providers: [AddressService, AddressRepository],
+  exports: [AddressService],
 })
 export class AddressModule { }

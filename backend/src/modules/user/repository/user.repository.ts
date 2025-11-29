@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/sequelize";
 import { InferCreationAttributes } from "sequelize";
 import { BaseRepository } from "src/common/base/base.repository";
 import { TypeUser, User } from "../entities/user.entity";
+import { Address } from "src/modules/address/entities/address.entity";
 
 
 @Injectable()
@@ -39,6 +40,20 @@ export class UserRepository extends BaseRepository<User> {
 
     async getInstanceOfUserById(id: string): Promise<User | null> {
         return await this.usuarioModel.findByPk(id);
+    }
+
+    async findByIdWithAddresses(userId: string): Promise<User | null> {
+        return this.usuarioModel.findOne({ where: { userId }, include: [Address] });
+    }
+
+    async addAddressToUser(userId: string, addressId: string): Promise<User | null> {
+        const user = await this.usuarioModel.findByPk(userId);
+        if (!user) return null;
+
+        user.addressId = addressId;
+        await user.save();
+
+        return this.findByIdWithAddresses(userId);
     }
 
 }
