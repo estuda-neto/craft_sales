@@ -1,1 +1,0 @@
-export const hiddenPaths = ["/manager", "/portifolios", "/messages", "/projects", "/proposals", "/jobs", "/users"];

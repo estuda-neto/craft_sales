@@ -1,0 +1,1 @@
+export const hiddenPaths = ["/manager", "/messages", "/products", "/profile", "/orders", "/users"];

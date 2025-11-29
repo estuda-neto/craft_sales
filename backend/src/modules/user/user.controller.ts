@@ -1,16 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Put, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Put, Req } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
 import { CreateUserDto, EmailResetDto, ResetPasswordDto, UpdateUserDto, UpdateUserPasswordDto, } from './dto';
 import { JwtAuthGuard } from './utils/guards/jwt.guard';
 import { RolesGuard } from './utils/guards/roles.guard';
 import { Roles } from './utils/decorators/roles.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
-import type { MultipartFile } from '@fastify/multipart';
 import * as fs from 'fs/promises';
 import { extname, join } from 'path';
 import { UserService } from './user.service';
 import { ApiError } from 'src/common/errors/apierror.class';
+import type { FastifyRequest } from 'fastify';
 
 @Controller('users')
 export class UserController {
@@ -109,15 +108,14 @@ export class UserController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id/photo')
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('photo'))
-  async uploadPhoto(@Param('id') id: string, @UploadedFile() file: MultipartFile,) {
-    if (!file) throw new ApiError('No photos sent', 400);
+  async uploadPhoto(@Param('id') id: string, @Req() req: FastifyRequest) {
+    const file = await req.file(); // Fastify retorna aqui o arquivo
 
-    // Fastify fornece file.toBuffer()
+    if (!file) throw new ApiError('No photo sent', 400);
+
     const buffer = await file.toBuffer();
-
     const ext = extname(file.filename);
-    const newName =`photo-${Date.now()}-${Math.random().toString(36).substring(2)}${ext}`;
+    const newName = `photo-${Date.now()}-${Math.random().toString(36).substring(2)}${ext}`;
 
     const uploadDir = join(process.cwd(), 'uploads/users/profile');
     await fs.mkdir(uploadDir, { recursive: true });

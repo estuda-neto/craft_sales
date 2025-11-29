@@ -28,8 +28,9 @@ export class BaseRepository<T extends Model> {
         return this.model.findByPk(id);
     }
 
-    async update(id: string, data: T["_creationAttributes"]): Promise<[number, T[]]> {
-        return this.update(id, data);
+    async update(id: string, data: Partial<T['_creationAttributes']>): Promise<[number, T[]]> {
+        const where = { [this.primaryKeyField]: id } as WhereOptions;
+        return this.model.update(data, { where, returning: true });
     }
 
     async updatePartial(id: string, data: Partial<T['_creationAttributes']>): Promise<[number, T[]]> {

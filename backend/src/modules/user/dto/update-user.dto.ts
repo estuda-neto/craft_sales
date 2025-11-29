@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import {IsEnum, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsEnum, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 import { TypeArtisan } from "../entities/user.entity";
 
 export class UpdateUserDto {
@@ -24,11 +24,6 @@ export class UpdateUserDto {
   @IsNumber()
   score?: number;
 
-   @ApiPropertyOptional({ description: "User photo URL" })
-  @IsOptional()
-  @IsString()
-  photo?: string;
-
   @ApiPropertyOptional({ description: "AddressId (UUID)" })
   @IsOptional()
   @IsUUID()
@@ -44,7 +39,7 @@ export class UpdateUserDto {
   @IsString()
   numberWalletCICAB?: string;
 
-  @ApiPropertyOptional({ description: "Type of artisan (if user is ARTESAO)", enum: TypeArtisan})
+  @ApiPropertyOptional({ description: "Type of artisan (if user is ARTESAO)", enum: TypeArtisan })
   @IsOptional()
   @IsEnum(TypeArtisan)
   artisanType?: TypeArtisan;

@@ -115,7 +115,6 @@ constructor(private readonly userRepository: UserRepository, private readonly em
     return this.userRepository.updatePassword(user.userId, hashed);
   }
 
-
   async addPhoto(id: string, newImages: string) {
     const user = await this.userRepository.getInstanceOfUserById(id);
     if (!user) throw new ApiError('User not found', 404);

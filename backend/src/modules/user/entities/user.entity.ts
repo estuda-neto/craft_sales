@@ -18,7 +18,7 @@ export enum TypeArtisan {
     METAL = 'METAL',
     RECICLÁVEIS = 'RECICLÁVEIS',
     PINTURA = 'PINTURA',
-    ESCILTURA = 'ESCULTURA',
+    ESCULTURA = 'ESCULTURA',
     PEDRA_SABÃO = 'PEDRA_SABÃO',
 }
 export function fromString(value: string): TypeUser {
@@ -97,7 +97,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     /** retationship N:1 -> Address*/
     @ForeignKey(() => Address)
     @Column(DataType.UUID)
-    declare addressId: string;
+    declare addressId?: string;
 
     @BelongsTo(() => Address)
     declare address?: Address;
