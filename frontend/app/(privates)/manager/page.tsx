@@ -1,20 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import { FolderOpenDotIcon, MessageCircleMoreIcon, ShieldIcon, UserCog2Icon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Session } from "@/utils/datatypes/session";
-import Image from "next/image";
 import { Loader } from "@/components/shared/Loader";
+import ProductExplorer from "@/components/ProductExplorer";
 
 export default async function Manager() {
   const isLoading = false;
   const session: Session | null = await getServerSession(authOptions);
   if (!session) redirect("/");
-
-  // const projectData = await getProjectsData();
-  // const proposalData = await getProposalsData();
-  // const getUserData = await getusersData();
 
   if (isLoading) {
     return (<div className="w-full h-full flex justify-center items-center"><Loader /></div>);
@@ -42,10 +39,10 @@ export default async function Manager() {
 
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"> {[
-          { value: "0", label: "Projetos", icon: <FolderOpenDotIcon size={28} />, link: "/projects" },
-          { value: "5", label: "Tecnologias", icon: <ShieldIcon size={28} />, link: "/" },
-          { value: "0", label: "Propostas", icon: <MessageCircleMoreIcon size={28} />, link: "/" },
-          { value: "0", label: "Usuarios Ativos", icon: <UserCog2Icon size={28} />, link: "/" },
+          { value: "Até 50%", label: "de desconto", icon: <FolderOpenDotIcon size={28} />, link: "/projects" },
+          { value: "Até 30%", label: "de desconto", icon: <ShieldIcon size={28} />, link: "/" },
+          { value: "Até 20%", label: "de desconto", icon: <MessageCircleMoreIcon size={28} />, link: "/" },
+          { value: "Até 10%", label: "de desconto", icon: <UserCog2Icon size={28} />, link: "/" },
         ].map((card, index) => (
           <Link href={card.link} key={index} className="bg-white rounded-2xl p-6 flex justify-between items-center shadow-md hover:bg-(--brand-400) transition-colors duration-300 cursor-pointer group">
             <div>
@@ -60,11 +57,8 @@ export default async function Manager() {
           </Link>
         ))}
         </div>
+        <ProductExplorer />
 
-        {/* Conteúdo */}
-        <div className="mt-8 bg-white rounded-2xl p-6 shadow-md overflow-auto">
-          conteudo
-        </div>
       </div>
     </div>
   );

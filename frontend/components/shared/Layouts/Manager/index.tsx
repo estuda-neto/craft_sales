@@ -7,14 +7,14 @@ import { useMenu } from "../../../../contexts/manager_context";
 
 type ManagerLayoutProps = {
   /** [0] header   [1] toast,
-   *  [2] sidebar, [3] conteúdo,
+   *  [2] conteúdo,[3] sidebar,
    *  [4] footer
   **/
   children: [ReactNode, ReactNode, ReactNode, ReactNode, ReactNode];
 };
 
 export const ManagerLayout: React.FC<ManagerLayoutProps> = ({ children }) => {
-  const [header, toastify, sidebar, content, footer] = children;
+  const [header, toastify, content, sidebar, footer] = children;
   const { menuActive } = useMenu();
 
   return (
@@ -22,8 +22,9 @@ export const ManagerLayout: React.FC<ManagerLayoutProps> = ({ children }) => {
       <header className={clsx(styles.header)}>{header}</header>
       <div className={clsx(styles.toastify)}>{toastify}</div>
 
-      <aside className={clsx(styles.side)}>{sidebar}</aside>
       <main className={clsx(styles.content)}>{content}</main>
+      <aside className={clsx(styles.side)}>{sidebar}</aside>
+
       <footer className={clsx(styles.footer)}>{footer}</footer>
     </div>
   );

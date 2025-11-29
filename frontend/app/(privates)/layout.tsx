@@ -39,15 +39,14 @@ export default function RootLayout({ children, cookies }: RootLayoutProps) {
     <html lang="pt-BR">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased ${theme === 'dark' ? 'dark' : ''}`} data-testid="root-layout">
         <ThemeInitializer />
-
         <MenuProvider>
           <ManagerLayout>
             <Header />
             <ToastContainer className="bg-gray-100" />
-            <MenuAside />
             <LayoutCaptureError>
               {children}
             </LayoutCaptureError>
+            <MenuAside />
             <Footer />
           </ManagerLayout>
         </MenuProvider>
