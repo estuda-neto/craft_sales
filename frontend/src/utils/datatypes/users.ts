@@ -1,3 +1,5 @@
+import { Address } from "./address";
+
 export enum TypeUser {
     CLIENTE = 'CLIENTE',
     ADMIN = 'ADMIN',
@@ -50,6 +52,29 @@ export interface User {
     numberWalletCICAB?: string;
     artisanType?: TypeArtisan;
     addressId?: string;
+}
+
+export interface UserWithAddress {
+    userId: string;
+    name: string;
+    email: string;
+    cpf: string;
+    dateOfBirth: Date
+    password: string;
+    phone: string;
+    photo?: string;
+    bio?: string;
+    score?: number;
+    typeuser: TypeUser;
+    userStatus?: TypeUserStatus;
+    checked?: boolean;
+    craftsmanRegistration?: string;
+    numberWalletCICAB?: string;
+    artisanType?: TypeArtisan;
+    addressId?: string;
+    createdAt: Date,
+    updatedAt: Date,
+    address: Address;
 }
 
 export interface UpdateUserInput {

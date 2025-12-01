@@ -26,11 +26,11 @@ export const authOptions: NextAuthOptions = {
                 const resposta = await requestAuthenticationUser(user);
 
                 if (resposta.accessToken && resposta.accessToken !== "User with credentials not found or invalid") {
-                    //TODO: colocar o token do usuario em um cookie Http Only
+                    // colocar o token do usuario em um cookie Http Only
                     (await cookies()).set("jwt_back", resposta.accessToken, { httpOnly: true, sameSite: "lax", path: "/", maxAge: 3600 });
                     (await cookies()).set("jwt_back_refresh", resposta.refreshToken, { httpOnly: true, sameSite: "lax", path: "/", maxAge: 3600 });
                     
-                    //TODO: decodificar as Claims
+                    // decodificar as Claims
                     const decodedClaims = decoderTokenToClaims(resposta.accessToken);
                     return { id: decodedClaims?.id ?? "", name: decodedClaims?.username ?? "", email: decodedClaims?.email ?? "", image: decodedClaims?.imagem ?? "", userStatus: decodedClaims?.userStatus ?? "unknown", accessToken: resposta.accessToken } as User;
                 }

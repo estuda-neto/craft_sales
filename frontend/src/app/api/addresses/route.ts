@@ -9,7 +9,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const token = (await cookieStore).get("jwt_back");
     let jwt = !token ? "not found" : token.value;
 
-    const response = await fetch(`${BASE_URL_BACKEND}/projects`, {
+    const response = await fetch(`${BASE_URL_BACKEND}/addresses`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${jwt}`,

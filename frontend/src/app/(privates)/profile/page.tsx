@@ -2,34 +2,37 @@ import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { Session } from "@/src/utils/datatypes/session";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import Image from "next/image";
 import { Edit2Icon, PlusIcon } from "lucide-react";
+import { UserWithAddress } from "@/src/utils/datatypes/users";
+import { BASE_URL_BACKEND } from "../../api/base_url";
+import Image from "next/image";
 import Link from "next/link";
 
-/*async gets
-    async function getProjectsData(): Promise<ProjectsDataOut | null> {
+async function getAddressData(session: Session): Promise<UserWithAddress | null> {
     try {
-        const response = await fetch(`http://localhost:3000/projects/reports`, {
-        method: "GET",
-        cache: "no-store",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        const response = await fetch(`${BASE_URL_BACKEND}/users/${session.user.id}/addresses`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${session.accessToken}`,
+                "Content-Type": "application/json",
+            },
         });
-        if (!response.ok) return null;
-        const data: ProjectsDataOut = await response.json();
-        return data;
+
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json") && response.status === 200) {
+            const userAddress: UserWithAddress = await response.json();
+            return userAddress;
+        }
+        return null;
     } catch (error) {
-        console.error("Error fetching portfolio data:", error);
         return null;
     }
-    }
-*/
+}
+
 export default async function ProfilePage() {
     const session: Session | null = await getServerSession(authOptions);
     if (!session) redirect("/");
-
-    // const projectData = await getProjectsData();
+    const userWitAddreessData = await getAddressData(session);
 
     return (
         <div className="w-full min-h-screen flex flex-col items-center bg-gray-100 py-8 px-4">
@@ -83,11 +86,11 @@ export default async function ProfilePage() {
                 <div className="space-y-3">
                     <div>
                         <p className="text-gray-600 text-sm font-medium">CEP:</p>
-                        <p className="text-gray-900 text-sm">—</p>
-                        <p className="text-gray-600 text-sm font-medium">Rua:</p>
-                        <p className="text-gray-900 text-sm">—</p>
+                        <p className="text-gray-900 text-sm">{userWitAddreessData?.address?.CEP}</p>
                         <p className="text-gray-600 text-sm font-medium">Bairro:</p>
-                        <p className="text-gray-900 text-sm">—</p>
+                        <p className="text-gray-900 text-sm">{userWitAddreessData?.address?.neighborhood}</p>
+                        <p className="text-gray-600 text-sm font-medium">Rua:</p>
+                        <p className="text-gray-900 text-sm">{userWitAddreessData?.address?.streetAndHouseNumber}</p>
                     </div>
 
                 </div>

@@ -5,11 +5,11 @@ import { CreateUserDto, EmailResetDto, ResetPasswordDto, UpdateUserDto, UpdateUs
 import { JwtAuthGuard } from './utils/guards/jwt.guard';
 import { RolesGuard } from './utils/guards/roles.guard';
 import { Roles } from './utils/decorators/roles.decorator';
-import * as fs from 'fs/promises';
 import { extname, join } from 'path';
 import { UserService } from './user.service';
 import { ApiError } from 'src/common/errors/apierror.class';
 import type { FastifyRequest } from 'fastify';
+import * as fs from 'fs/promises';
 
 @Controller('users')
 export class UserController {
@@ -131,9 +131,9 @@ export class UserController {
   @ApiBearerAuth('jwt')
   @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get(':id/addresses')
-  async getUserAddresses(@Param('id') id: string) {
-    return await this.usersService.findByIdWithAddress(id);
+  @Get(':userId/addresses')
+  async getUserAddresses(@Param('userId') userId: string) {
+    return await this.usersService.findByIdWithAddress(userId);
   }
 
   @ApiBearerAuth('jwt')

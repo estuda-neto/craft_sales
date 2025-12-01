@@ -47,3 +47,15 @@ export interface AddressOut {
     createdAt: string;   // ISO date string
     updatedAt: string;
 }
+
+export interface Address {
+    addressId: string,
+    country: string,
+    CEP: string,
+    state: BrazilStates,
+    city: string,
+    neighborhood: string,
+    streetAndHouseNumber: string,
+    createdAt: Date,
+    updatedAt: Date,
+}

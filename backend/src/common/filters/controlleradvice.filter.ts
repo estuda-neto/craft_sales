@@ -22,7 +22,7 @@ export class ControllerAdviceFilter implements ExceptionFilter {
             message = exception.getResponse();
         }
 
-        this.logger.error(`Erro acontecendo em ${request.method} ${request.url}`,JSON.stringify({ status, message, stack: (exception as any).stack }));
+        this.logger.error(`Erro acontecendo em ${request.method} ${request.url}`,JSON.stringify({ status, message }));
 
         response.status(status).send({ statusCode: status, timestamp: new Date().toISOString(), path: request.url, message });
     }
