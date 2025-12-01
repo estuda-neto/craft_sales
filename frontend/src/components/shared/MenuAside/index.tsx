@@ -1,11 +1,11 @@
 "use client";
 
-import { AlignJustifyIcon, HouseIcon, LockIcon, MessageCircleIcon, SettingsIcon, TruckIcon, UserIcon } from "lucide-react";
+import { AlignJustifyIcon, HouseIcon, LockIcon, MessageCircleIcon, SettingsIcon, SwatchBookIcon, TruckIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { ReactElement, useState } from "react";
 import { useMenu } from "@/src/contexts/manager_context";
 
-type NavItem = { icon: ReactElement; title: string; url: string; isBlocked?: boolean; };
+type NavItem = { icon: ReactElement; title: string; url: string; isAdmin?: boolean; isArtisan?: boolean; };
 
 export const MenuAside: React.FC = () => {
   const { menuActive, setMenuActive } = useMenu();
@@ -14,9 +14,9 @@ export const MenuAside: React.FC = () => {
   const navItems: NavItem[] = [
     { icon: <HouseIcon size={24} />, title: "Manager", url: "/manager" },
     { icon: <UserIcon size={24} />, title: "Perfil", url: "/profile" },
-    { icon: <TruckIcon size={24} />, title: "Pedidos", url: "/orders", isBlocked: true },
-    { icon: <MessageCircleIcon size={24} />, title: "Mensagens", url: "/messages" },
-    { icon: <SettingsIcon size={24} />, title: "Settings", url: "/settings", isBlocked: true },
+    { icon: <TruckIcon size={24} />, title: "Pedidos", url: "/orders" },
+    { icon: <MessageCircleIcon size={24} />, title: "Mensagens", url: "/messages", isArtisan: true },
+    { icon: <SettingsIcon size={24} />, title: "Settings", url: "/settings", isAdmin: true },
   ];
 
   return (
@@ -29,20 +29,18 @@ export const MenuAside: React.FC = () => {
       <ul className="flex flex-col mt-4 gap-2 flex-1">
         {navItems.map((item, index) => (
           <li key={index} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} className={`relative rounded-r-3xl transition-all duration-300  ${hoveredIndex === index ? "bg-white/80" : ""}`}>
-            <Link href={item.url}
-              className={`flex items-center py-3 transition-colors duration-200 ${hoveredIndex === index ? "text-blue-300" : "text-white"} ${item.isBlocked ? "opacity-50 cursor-not-allowed" : ""}`}
-              onClick={(e) => item.isBlocked && e.preventDefault()}>
-
+            <Link href={item.url} className={`flex items-center py-3 transition-colors duration-200 ${hoveredIndex === index ? "text-blue-300" : "text-white"}`}>
               <span className="flex justify-center items-center min-w-[60px] h-[60px]">
                 {item.icon}
               </span>
-
               <span className={`whitespace-nowrap text-base font-medium transition-opacity duration-300 ${menuActive ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
                 {item.title}
               </span>
 
-              {/* Ícone do cadeado */}
-              {item.isBlocked && !menuActive && (<LockIcon size={18} className="ml-2" />)}
+              {/* Ícone do admin */}
+              {item.isAdmin && !menuActive && (<LockIcon size={18} className="ml-2" />)}
+              {/* Ícone do artesao */}
+              {item.isArtisan && !menuActive && (<SwatchBookIcon size={18} className="ml-2" />)}
             </Link>
           </li>
         ))}

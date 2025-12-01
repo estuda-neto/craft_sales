@@ -38,7 +38,7 @@ export default function RootLayout({ children, cookies }: RootLayoutProps) {
         <ThemeInitializer />
         <MainLayout>
           <Header />
-          <ToastContainer className="bg-gray-100" />
+          <ToastContainer />
           {children}
           <Footer />
         </MainLayout>

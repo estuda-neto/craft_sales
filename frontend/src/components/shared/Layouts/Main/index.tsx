@@ -13,7 +13,7 @@ export const MainLayout = ({ children }: TypeProps) => {
   return (
     <div className="grid min-h-screen grid-rows-[auto_auto_1fr_auto]">
       <header className="max-h-[200px]">{childrenArray[0]}</header>
-      <div className="min-h-[10px] overflow-hidden bg-white">{childrenArray[1]}</div>
+      <div className="min-h-2.5 overflow-hidden bg-white">{childrenArray[1]}</div>
       <main className="min-h-[60vh]">{childrenArray[2]}</main>
       <footer className="h-[350px]">{childrenArray[3]}</footer>
     </div>
