@@ -1,1 +1,1 @@
-export const hiddenPaths = ["/manager", "/messages", "/products", "/profile", "/orders", "/users","/settings"];
+export const hiddenPaths = ["/manager", "/messages", "/products", "/profile", "/orders", "/users","/settings","/address/new"];

@@ -2,20 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { decoderTokenToClaims } from "./app/api/auth/decode-claims";
 
 const adminRoutes = ["/admin", "/usuarios", "/dashboard/admin", "/settings"];
-const artesaoRoutes = ["/artesao", "/messages", "/meus-produtos", "/minha-loja"];
+const artesaoRoutes = ["/artesao", "/messages", "/atelie", "/minha-loja"];
 
 export const config = {
     matcher: [
         // All Path admin:
         "/admin/:path*", "/usuarios/:path*", "/settings", "/settings/:path*", "/dashboard/admin/:path*", "/config/admin/:path*", "/analisar",
         // All Path artesão:
-        "/artesao/:path*", "/meus-produtos/:path*", "/messages", "/messages/:path*", "/minha-loja/:path*"
+        "/artesao/:path*", "/meus-produtos/:path*", "/messages", "/messages/:path*", "/atelie", "/atelie/:path*", "/minha-loja/:path*"
     ]
 };
 
 export function proxy(request: NextRequest) {
     const path = request.nextUrl.pathname;
-    console.log(`Middleware ativado para: ${path}`);
+    console.log(`proxy atived for: ${path}`);
 
     const isAdminRoute = adminRoutes.some(route => path.startsWith(route));
     const isArtisanRoute = artesaoRoutes.some(route => path.startsWith(route));

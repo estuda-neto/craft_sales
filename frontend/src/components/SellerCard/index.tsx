@@ -17,9 +17,9 @@ export const SellerCard = () => {
 
       <div className="relative h-[20%] w-full flex overflow-hidden">
         {/* texto e preço */}
-        <div className="w-[60%] p-2 bg-linear-to-br from-black/20 to-black/90 rounded-b-[25px] flex flex-col">
-          <p className="text-[8px] font-semibold text-gray-700">Produto Exemplo</p>
-          <p className="text-[12px] font-bold text-gray-900">R$ 150,00</p>
+        <div className="w-[60%] py-2 px-6 bg-[#40241B] rounded-b-[25px] flex flex-col">
+          <p className="text-[10px] font-semibold text-green-600">Preço:</p>
+          <p className="text-[12px] font-bold text-white">R$ 150,00</p>
         </div>
 
         <div className="h-full w-[40%] rounded-tl-[25px] flex items-center justify-center">

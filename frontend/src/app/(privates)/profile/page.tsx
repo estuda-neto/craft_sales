@@ -58,7 +58,7 @@ export default async function ProfilePage() {
 
                 {/* CPF */}
                 <p className="text-gray-700 text-sm">
-                    <span className="font-medium">CPF:</span> 118.084-54
+                    <span className="font-medium">CPF:</span> ***.***.084-54
                 </p>
                 {/* Data nascimento */}
                 <p className="text-gray-700 text-sm">
@@ -84,18 +84,36 @@ export default async function ProfilePage() {
 
                 {/* Campos */}
                 <div className="space-y-3">
-                    <div>
-                        <p className="text-gray-600 text-sm font-medium">CEP:</p>
-                        <p className="text-gray-900 text-sm">{userWitAddreessData?.address?.CEP}</p>
-                        <p className="text-gray-600 text-sm font-medium">Bairro:</p>
-                        <p className="text-gray-900 text-sm">{userWitAddreessData?.address?.neighborhood}</p>
-                        <p className="text-gray-600 text-sm font-medium">Rua:</p>
-                        <p className="text-gray-900 text-sm">{userWitAddreessData?.address?.streetAndHouseNumber}</p>
+                    <h2 className="text-lg font-semibold text-gray-900 mb-4">Endereço</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                        {/* CEP */}
+                        <div>
+                            <p className="text-gray-600 text-sm font-medium">CEP</p>
+                            <p className="text-gray-900 text-sm">{userWitAddreessData?.address?.CEP || "—"}
+                            </p>
+                        </div>
+
+                        {/* Bairro */}
+                        <div>
+                            <p className="text-gray-600 text-sm font-medium">Bairro</p>
+                            <p className="text-gray-900 text-sm">
+                                {userWitAddreessData?.address?.neighborhood || "—"}
+                            </p>
+                        </div>
+
+                        {/* Rua */}
+                        <div className="sm:col-span-2">
+                            <p className="text-gray-600 text-sm font-medium">Rua e Número</p>
+                            <p className="text-gray-900 text-sm">
+                                {userWitAddreessData?.address?.streetAndHouseNumber || "—"}
+                            </p>
+                        </div>
+
                     </div>
-
                 </div>
-            </div>
 
+            </div>
         </div>
     );
 }

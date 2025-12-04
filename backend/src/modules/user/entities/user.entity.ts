@@ -4,6 +4,7 @@ import { Car } from "src/modules/car/entities/car.entity";
 import { Address } from "src/modules/address/entities/address.entity";
 import { Order } from "src/modules/order/entities/order.entity";
 import * as bcrypt from 'bcrypt';
+import { Product } from "src/modules/product/entities/product.entity";
 
 export enum TypeUser {
     CLIENTE = 'CLIENTE',
@@ -108,6 +109,10 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     /** retationship 1:N -> Order*/
     @HasMany(() => Order)
     declare orders?: Order[];
+
+    /** retationship 1:N -> Product*/
+    @HasMany(() => Product)
+    declare products?: Product[];
 
     //Listeners
     @BeforeCreate

@@ -9,10 +9,6 @@ import { Header } from "@/src/components/shared/Header";
 import { MenuAside } from "@/src/components/shared/MenuAside";
 import { LayoutCaptureError } from "@/src/components/shared/Layouts/Manager/layer_cap_error";
 import { Footer } from "@/src/components/shared/Footer";
-import { Session } from "@/src/utils/datatypes/session";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

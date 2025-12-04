@@ -1,6 +1,6 @@
 "use client";
 
-import { AlignJustifyIcon, HouseIcon, LockIcon, MessageCircleIcon, SettingsIcon, SwatchBookIcon, TruckIcon, UserIcon } from "lucide-react";
+import { AlignJustifyIcon, HouseIcon, LockIcon, MessageCircleIcon, PaletteIcon, SettingsIcon, SwatchBookIcon, TruckIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { ReactElement, useState } from "react";
 import { useMenu } from "@/src/contexts/manager_context";
@@ -16,6 +16,7 @@ export const MenuAside: React.FC = () => {
     { icon: <UserIcon size={24} />, title: "Perfil", url: "/profile" },
     { icon: <TruckIcon size={24} />, title: "Pedidos", url: "/orders" },
     { icon: <MessageCircleIcon size={24} />, title: "Mensagens", url: "/messages", isArtisan: true },
+    { icon: <PaletteIcon size={24} />, title: "Ateliê Digital", url: "/atelie", isArtisan: true },
     { icon: <SettingsIcon size={24} />, title: "Settings", url: "/settings", isAdmin: true },
   ];
 
@@ -28,8 +29,8 @@ export const MenuAside: React.FC = () => {
       {/* Lista */}
       <ul className="flex flex-col mt-4 gap-2 flex-1">
         {navItems.map((item, index) => (
-          <li key={index} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} className={`relative rounded-r-3xl transition-all duration-300  ${hoveredIndex === index ? "bg-white/80" : ""}`}>
-            <Link href={item.url} className={`flex items-center py-3 transition-colors duration-200 ${hoveredIndex === index ? "text-blue-300" : "text-white"}`}>
+          <li key={index} onMouseEnter={() => setHoveredIndex(index)} onMouseLeave={() => setHoveredIndex(null)} className={`relative rounded-r-3xl transition-all duration-300  ${hoveredIndex === index ? "bg-white/70" : ""}`}>
+            <Link href={item.url} className={`flex items-center py-3 transition-colors duration-200 ${hoveredIndex === index ? "text-amber-950" : "text-white"}`}>
               <span className="flex justify-center items-center min-w-[60px] h-[60px]">
                 {item.icon}
               </span>
@@ -38,9 +39,9 @@ export const MenuAside: React.FC = () => {
               </span>
 
               {/* Ícone do admin */}
-              {item.isAdmin && !menuActive && (<LockIcon size={18} className="ml-2" />)}
+              {item.isAdmin && !menuActive && (<LockIcon size={18} className="ml-2" color="#D1003B" />)}
               {/* Ícone do artesao */}
-              {item.isArtisan && !menuActive && (<SwatchBookIcon size={18} className="ml-2" />)}
+              {item.isArtisan && !menuActive && (<SwatchBookIcon size={18} className="ml-2" color="#804936" />)}
             </Link>
           </li>
         ))}
