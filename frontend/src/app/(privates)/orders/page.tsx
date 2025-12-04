@@ -4,7 +4,7 @@ import { Session } from "@/src/utils/datatypes/session";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Image from "next/image";
-import { CheckCircle2, Package, Truck, MapPin, ArrowRight } from "lucide-react";
+import {  Truck, ArrowRight } from "lucide-react";
 import OrderTimeline from "@/src/components/OrderTimeline";
 
 export default async function Orders() {

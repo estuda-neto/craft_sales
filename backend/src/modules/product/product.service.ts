@@ -64,4 +64,15 @@ export class ProductService extends BaseService<Product, CreateProductDto, Updat
     await product.save();
     return product;
   }
+
+   async addPhoto(id: string, newImages: string) {
+    const product = await this.productRepository.getInstanceById(id);
+    if (!product) throw new ApiError('Product not found', 404);
+    product.image = newImages;
+    await product.save();
+    return product;
+  }
+  async findAllOfUser(id: string): Promise<Product[]>{
+    return this.productRepository.findAllOfUserById(id);
+  }
 }

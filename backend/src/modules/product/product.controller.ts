@@ -1,7 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { ApiBearerAuth, ApiConsumes } from '@nestjs/swagger';
+import { Roles } from '../user/utils/decorators/roles.decorator';
+import { JwtAuthGuard } from '../user/utils/guards/jwt.guard';
+import { RolesGuard } from '../user/utils/guards/roles.guard';
+import type { FastifyRequest } from 'fastify';
+import { ApiError } from 'src/common/errors/apierror.class';
+import { extname, join } from 'path';
+import * as fs from 'fs/promises';
 
 @Controller('products')
 export class ProductController {
@@ -42,6 +50,11 @@ export class ProductController {
     return await this.productService.findOneWithFinalPrice(id);
   }
 
+  @Get('user/:userId')
+  async findOfUserId(@Param('userId') id: string) {
+    return await this.productService.findAllOfUser(id);
+  }
+
   @Get('filter/on-sale')
   async findProductsOnSale() {
     return await this.productService.findProductsOnSale();
@@ -50,5 +63,29 @@ export class ProductController {
   @Patch(':id/stock')
   async updateStock(@Param('id') id: string, @Body('quantity') quantity: number) {
     return await this.productService.updateStock(id, quantity);
+  }
+
+  @ApiBearerAuth('jwt')
+  @Roles('ADMIN', 'ARTESAO')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch(':id/photo')
+  @ApiConsumes('multipart/form-data')
+  async uploadPhoto(@Param('id') id: string, @Req() req: FastifyRequest) {
+    const file = await req.file();
+    if (!file) throw new ApiError('No photo sent', 400);
+
+    const buffer = await file.toBuffer();
+    const ext = extname(file.filename);
+    const newName = `photo-${Date.now()}-${Math.random().toString(36).substring(2)}${ext}`;
+
+    const uploadDir = join(process.cwd(), 'uploads/products');
+    await fs.mkdir(uploadDir, { recursive: true });
+
+    const uploadPath = join(uploadDir, newName);
+    await fs.writeFile(uploadPath, buffer);
+
+    const filePath = `/uploads/products/${newName}`;
+
+    return await this.productService.addPhoto(id, filePath);
   }
 }

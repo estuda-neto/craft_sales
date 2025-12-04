@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { BASE_URL_BACKEND } from "../../../../base_url";
-import { AddressOut } from "@/src/utils/datatypes/address";
 import { decoderTokenToClaims } from "@/src/app/api/auth/decode-claims";
 import { User } from "@/src/utils/datatypes/users";
 

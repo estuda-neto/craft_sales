@@ -33,4 +33,9 @@ export class ProductRepository extends BaseRepository<Product> {
         return this.productModel.findAll({ where: { onSale: true } });
     }
 
+    async findAllOfUserById(userId: string): Promise<Product[]> {
+        return await this.productModel.findAll({ where: { userId }, raw: true });
+    }
+
+
 }
