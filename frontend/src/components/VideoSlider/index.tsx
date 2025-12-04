@@ -18,7 +18,7 @@ function toEmbed(url: string) {
 }
 
 
-export default function VideoSliderCard() {
+export const  VideoSliderCard = () => {
     const [index, setIndex] = useState(0);
 
     const next = () => setIndex((i) => (i + 1) % videos.length);
@@ -33,11 +33,11 @@ export default function VideoSliderCard() {
                 <ChevronLeftIcon color="#000" />
             </button>
 
-            <div className="relative w-[70%] h-[600px] rounded-4xl overflow-hidden bg-gray-200">
-                <iframe src={embedUrl} className="w-full h-[400px] object-cover" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+            <div className="relative w-[73%] h-[600px] bg-[#804936] rounded-4xl overflow-hidden">
+                <iframe src={embedUrl} className="w-full h-[500px] object-cover" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
 
                 {/* ÁREA DE TEXTO */}
-                <div className="absolute bottom-0 left-0 w-full h-[200px] bg-[#d9d9d9] text-black" style={{ clipPath: "polygon(0 5%, 70% 5%, 75% 40%, 100% 40%, 100% 100%, 0 100%)" }}>
+                <div className="absolute bottom-0 left-0 w-full h-[100px] bg-[#d9d9d9] text-black" style={{ clipPath: "polygon(0 5%, 70% 5%, 75% 40%, 100% 40%, 100% 100%, 0 100%)" }}>
                     <div className="relative p-4">
                         <p className="text-sm">{current.texto}</p>
                         <button className="mt-3 px-4 py-1 bg-neutral-800 text-white rounded-full text-sm">

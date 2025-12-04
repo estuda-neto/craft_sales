@@ -4,7 +4,6 @@ import { decoderTokenToClaims } from "./app/api/auth/decode-claims";
 const adminRoutes = ["/admin", "/usuarios", "/dashboard/admin", "/settings"];
 const artesaoRoutes = ["/artesao", "/messages", "/meus-produtos", "/minha-loja"];
 
-
 export const config = {
     matcher: [
         // All Path admin:
@@ -14,7 +13,7 @@ export const config = {
     ]
 };
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     const path = request.nextUrl.pathname;
     console.log(`Middleware ativado para: ${path}`);
 
