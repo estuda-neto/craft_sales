@@ -65,14 +65,24 @@ export class ProductService extends BaseService<Product, CreateProductDto, Updat
     return product;
   }
 
-   async addPhoto(id: string, newImages: string) {
+  async addPhoto(id: string, newImages: string) {
     const product = await this.productRepository.getInstanceById(id);
     if (!product) throw new ApiError('Product not found', 404);
     product.image = newImages;
     await product.save();
     return product;
   }
-  async findAllOfUser(id: string): Promise<Product[]>{
+  async findAllOfUser(id: string): Promise<Product[]> {
     return this.productRepository.findAllOfUserById(id);
   }
+
+  async findProductsChecked(): Promise<Product[]> {
+    return this.productRepository.findAllChecked();
+  }
+
+  async filterProducts(filters: { category?: string; min?: number; max?: number; onSale?: string; }) {
+    const onSaleConverted = filters.onSale === "true" ? true : false;
+    return this.productRepository.filter({ ...filters, onSale: onSaleConverted });
+  }
+
 }

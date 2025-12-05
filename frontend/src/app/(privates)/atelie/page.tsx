@@ -36,7 +36,7 @@ export default async function Atelie() {
                     </Link>
 
                     {/* Meus Produtos */}
-                    <Link href={`/products/${session.user.id}`} className="p-6 bg-white rounded-xl shadow-sm border hover:shadow-md transition-all flex items-start gap-4">
+                    <Link href={`/products/user/${session.user.id}`} className="p-6 bg-white rounded-xl shadow-sm border hover:shadow-md transition-all flex items-start gap-4">
                         <ClipboardList className="w-8 h-8 text-blue-600" />
                         <div>
                             <h2 className="text-lg font-semibold">Meus Produtos</h2>

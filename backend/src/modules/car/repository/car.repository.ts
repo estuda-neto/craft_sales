@@ -31,4 +31,11 @@ export class CarRepository extends BaseRepository<Car> {
     async findByIdWithItems(carId: string): Promise<Car | null> {
         return await this.carModel.findByPk(carId, { include: [{ association: 'items', include: [{ association: 'product' }] }] });
     }
+
+    async getCarOfUserWithUserId(userId: string): Promise<Car | null> {
+        return await this.carModel.findOne({
+            where: { userId },
+            include: [{ association: 'items', include: [{ association: 'product' }] }]
+        });
+    }
 }

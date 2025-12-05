@@ -54,5 +54,11 @@ export class CarService extends BaseService<Car, CreateCarDto, UpdateCarDto> {
     return carUpdated;
   }
 
+  async findCarOfUser(userId: string): Promise<Car> {
+    const car = await this.carRepository.getCarOfUserWithUserId(userId);
+    if (!car) throw new ApiError("car not found", 404)
+    return car;
+  }
+
 
 }

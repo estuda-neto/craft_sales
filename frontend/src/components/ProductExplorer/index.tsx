@@ -1,26 +1,40 @@
 "use client";
 
-import { useState } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronDown } from "lucide-react";
+import Link from "next/link";
+import { Product } from "@/src/utils/datatypes/products";
+import { BASE_URL_BACKEND } from "@/src/app/api/base_url";
+import { toast } from "react-toastify";
+import Image from "next/image";
+import { Loader } from "../shared/Loader";
 
 export default function ProductExplorer() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [openSection, setOpenSection] = useState<string | null>("category");
 
-  const toggleFilter = (value: string) => {
-    setSelectedFilters((prev) => prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]);
-  };
+  const toggleFilter = (value: string) => { setSelectedFilters((prev) => prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]); };
+  const toggleSection = (section: string) => { setOpenSection(openSection === section ? null : section); };
 
-  const toggleSection = (section: string) => {
-    setOpenSection(openSection === section ? null : section);
-  };
-
-  const products = Array.from({ length: 12 }).map((_, i) => ({ id: i, name: `Produto Premium ${i + 1}`, price: (49 + i * 3).toFixed(2), image: `https://source.unsplash.com/random/300x300?sig=${i}&product` }));
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${BASE_URL_BACKEND}/products/filter/checked`);
+        const data = await res.json();
+        setProducts(data);
+      } catch (error) {
+        toast.info(`Erro ao carregar produtos: ${error}`);
+      } finally {
+        setLoading(false); // <-- encerrou o carregamento
+      }
+    })();
+  }, []);
 
   return (
     <div className="w-full mt-3 min-h-screen p-6">
       <div className="grid grid-cols-1 lg:grid-cols-[15%_85%] gap-6">
-
         {/* --- ASIDE DE FILTROS --- */}
         <aside className="bg-white rounded-2xl shadow-lg p-5 border border-gray-200 h-fit sticky top-4">
           <h2 className="text-lg font-bold text-gray-700 mb-4">Filtros</h2>
@@ -29,11 +43,7 @@ export default function ProductExplorer() {
           <div className="mb-4">
             <button onClick={() => toggleSection("category")} className="flex justify-between w-full font-medium text-gray-800">
               Categoria
-              <ChevronDown
-                size={18}
-                className={`transition-transform ${openSection === "category" ? "rotate-180" : ""
-                  }`}
-              />
+              <ChevronDown size={18} className={`transition-transform ${openSection === "category" ? "rotate-180" : ""}`} />
             </button>
 
             {openSection === "category" && (
@@ -85,10 +95,7 @@ export default function ProductExplorer() {
             {openSection === "material" && (
               <div className="mt-2 space-y-2 pl-1">
                 {["Algodão", "Jeans", "Couro", "Poliéster"].map((item) => (
-                  <label
-                    key={item}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
+                  <label key={item} className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" className="w-4 h-4 accent-amber-900 cursor-pointer" onChange={() => toggleFilter(item)} checked={selectedFilters.includes(item)} />
                     <span className="text-sm text-gray-700">{item}</span>
                   </label>
@@ -104,35 +111,25 @@ export default function ProductExplorer() {
             Produtos recomendados
           </h2>
 
-          {/* Grade de produtos */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((p) => (
-              <div
-                key={p.id}
-                className="group bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
-              >
-                <div className="rounded-lg overflow-hidden">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+          {loading ? (<Loader />) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+              {products.map((p) => (
+                <div key={p.productId} className="group bg-white border border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="rounded-lg overflow-hidden">
+                    <Image src={`http://localhost:3000${p.image}`} width={200} height={200} alt={p.name} className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300" />
+                  </div>
+                  <h3 className="text-gray-800 text-sm font-medium mt-3 group-hover:text-amber-900 transition">{p.name}</h3>
+                  <p className="mt-1 text-lg font-bold text-amber-900">R$ {p.price}</p>
+
+                  <Link href={`/products/${p.productId}`} className="w-full mt-3 p-2 rounded-lg bg-amber-900 text-white text-sm font-medium hover:bg-amber-700 transition">
+                    Ver detalhes
+                  </Link>
                 </div>
+              ))}
+            </div>
+          )}
 
-                <h3 className="text-gray-800 text-sm font-medium mt-3 group-hover:text-amber-900 transition">
-                  {p.name}
-                </h3>
 
-                <p className="mt-1 text-lg font-bold text-amber-900">
-                  R$ {p.price}
-                </p>
-
-                <button className="w-full mt-3 py-2 rounded-lg bg-amber-900 text-white text-sm font-medium hover:bg-amber-700 transition">
-                  Ver detalhes
-                </button>
-              </div>
-            ))}
-          </div>
         </section>
       </div>
     </div>

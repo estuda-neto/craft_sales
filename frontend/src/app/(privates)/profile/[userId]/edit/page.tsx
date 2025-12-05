@@ -9,8 +9,8 @@ interface Props { params: { userId: string }; };
 export default async function ProfileEdit({ params }: Props) {
     const isLoading = false;
     const session: Session | null = await getServerSession(authOptions);
-    if (!session) redirect("/");
     const { userId } = await params;
+    if (!session || !userId) redirect("/");
 
     if (isLoading) {
         return (<div className="w-full h-full flex justify-center items-center"><Loader /></div>);

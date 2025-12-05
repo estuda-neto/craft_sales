@@ -1,6 +1,6 @@
 "use client";
 
-import { AlignJustifyIcon, HouseIcon, LockIcon, MessageCircleIcon, PaletteIcon, SettingsIcon, SwatchBookIcon, TruckIcon, UserIcon } from "lucide-react";
+import { AlignJustifyIcon, HouseIcon, LockIcon, MessageCircleIcon, PaletteIcon, SettingsIcon, ShoppingBasketIcon, SwatchBookIcon, TruckIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { ReactElement, useState } from "react";
 import { useMenu } from "@/src/contexts/manager_context";
@@ -13,6 +13,7 @@ export const MenuAside: React.FC = () => {
 
   const navItems: NavItem[] = [
     { icon: <HouseIcon size={24} />, title: "Manager", url: "/manager" },
+    { icon: <ShoppingBasketIcon size={24} />, title: "Carrinho", url: "/car" },
     { icon: <UserIcon size={24} />, title: "Perfil", url: "/profile" },
     { icon: <TruckIcon size={24} />, title: "Pedidos", url: "/orders" },
     { icon: <MessageCircleIcon size={24} />, title: "Mensagens", url: "/messages", isArtisan: true },

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -55,9 +55,19 @@ export class ProductController {
     return await this.productService.findAllOfUser(id);
   }
 
+  @Get('filter')
+  async filterProducts(@Query('category') category?: string, @Query('min') min?: number, @Query('max') max?: number, @Query('onSale') onSale?: string) {
+    return await this.productService.filterProducts({ category, min, max, onSale });
+  }
+
   @Get('filter/on-sale')
   async findProductsOnSale() {
     return await this.productService.findProductsOnSale();
+  }
+
+  @Get('filter/checked')
+  async findAllChecked() {
+    return await this.productService.findProductsChecked();
   }
 
   @Patch(':id/stock')
@@ -88,4 +98,5 @@ export class ProductController {
 
     return await this.productService.addPhoto(id, filePath);
   }
+
 }
