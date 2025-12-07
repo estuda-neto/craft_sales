@@ -32,7 +32,7 @@ export default async function AdminSettings() {
                     >
                         <Users className="w-8 h-8 text-blue-600" />
                         <div>
-                            <h2 className="text-lg font-semibold">Gerenciar Usuários</h2>
+                            <h2 className="text-lg text-gray-700 font-semibold">Gerenciar Usuários</h2>
                             <p className="text-gray-500 text-sm mt-1">
                                 Liste, edite, bloqueie ou exclua usuários do sistema.
                             </p>
@@ -40,13 +40,10 @@ export default async function AdminSettings() {
                     </Link>
 
                     {/* Gerenciar Artesãos */}
-                    <Link
-                        href="/admin/artesaos"
-                        className="p-6 bg-white rounded-xl shadow-sm border hover:shadow-md transition-all flex items-start gap-4"
-                    >
+                    <Link href="/admin/artesaos" className="p-6 bg-white rounded-xl shadow-sm border hover:shadow-md transition-all flex items-start gap-4">
                         <UserCog className="w-8 h-8 text-purple-600" />
                         <div>
-                            <h2 className="text-lg font-semibold">Gerenciar Artesãos</h2>
+                            <h2 className="text-lg text-gray-700 font-semibold">Gerenciar Artesãos</h2>
                             <p className="text-gray-500 text-sm mt-1">
                                 Aprove artesãos, revise documentos e gerencie perfis.
                             </p>
@@ -60,7 +57,7 @@ export default async function AdminSettings() {
                     >
                         <ShieldCheck className="w-8 h-8 text-orange-600" />
                         <div>
-                            <h2 className="text-lg font-semibold">Aprovar Produtos</h2>
+                            <h2 className="text-lg text-gray-700 font-semibold">Aprovar Produtos</h2>
                             <p className="text-gray-500 text-sm mt-1">
                                 Produtos aguardando revisão e aprovação.
                             </p>
@@ -74,7 +71,7 @@ export default async function AdminSettings() {
                     >
                         <PackageSearch className="w-8 h-8 text-green-600" />
                         <div>
-                            <h2 className="text-lg font-semibold">Todos os Produtos</h2>
+                            <h2 className="text-lg text-gray-700 font-semibold">Todos os Produtos</h2>
                             <p className="text-gray-500 text-sm mt-1">
                                 Veja todos os produtos cadastrados no marketplace.
                             </p>
@@ -88,7 +85,7 @@ export default async function AdminSettings() {
                     >
                         <Layers className="w-8 h-8 text-indigo-600" />
                         <div>
-                            <h2 className="text-lg font-semibold">Gerenciar Categorias</h2>
+                            <h2 className="text-lg text-gray-700 font-semibold">Gerenciar Categorias</h2>
                             <p className="text-gray-500 text-sm mt-1">
                                 Adicione, edite e exclua categorias de produtos.
                             </p>
@@ -102,7 +99,7 @@ export default async function AdminSettings() {
                     >
                         <ClipboardList className="w-8 h-8 text-teal-600" />
                         <div>
-                            <h2 className="text-lg font-semibold">Pedidos</h2>
+                            <h2 className="text-lg text-gray-700 font-semibold">Pedidos</h2>
                             <p className="text-gray-500 text-sm mt-1">
                                 Acompanhe todos os pedidos realizados no sistema.
                             </p>
@@ -116,7 +113,7 @@ export default async function AdminSettings() {
                     >
                         <Store className="w-8 h-8 text-pink-600" />
                         <div>
-                            <h2 className="text-lg font-semibold">Lojas</h2>
+                            <h2 className="text-lg text-gray-700 font-semibold">Lojas</h2>
                             <p className="text-gray-500 text-sm mt-1">
                                 Gerencie lojas artesanais e sua situação no sistema.
                             </p>
@@ -124,13 +121,10 @@ export default async function AdminSettings() {
                     </Link>
 
                     {/* Configurações do Sistema */}
-                    <Link
-                        href="/admin/configuracoes"
-                        className="p-6 bg-white rounded-xl shadow-sm border hover:shadow-md transition-all flex items-start gap-4"
-                    >
+                    <Link href="/settings/midias" className="p-6 bg-white rounded-xl shadow-sm border hover:shadow-md transition-all flex items-start gap-4">
                         <Cog className="w-8 h-8 text-gray-700" />
                         <div>
-                            <h2 className="text-lg font-semibold">Configurações do Sistema</h2>
+                            <h2 className="text-lg text-gray-700 font-semibold">Configurações do Sistema</h2>
                             <p className="text-gray-500 text-sm mt-1">
                                 Controle regras, permissões e parâmetros globais.
                             </p>

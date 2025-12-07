@@ -8,7 +8,7 @@ type EventCardProps = {
 
 export const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
-    <div className="relative w-[360px] h-[640px] rounded-3xl overflow-hidden shadow-xl bg-black text-white group cursor-pointer">
+    <div className="relative w-[300px] h-[640px] rounded-3xl overflow-hidden shadow-xl bg-black text-white group cursor-pointer">
 
       {/* Imagem fixa no topo */}
       <div className="relative w-full h-[460px]">

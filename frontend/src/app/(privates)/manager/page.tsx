@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FolderOpenDotIcon, MessageCircleMoreIcon, ShieldIcon, UserCog2Icon } from "lucide-react";
+import { FolderOpenDotIcon, MessageCircleMoreIcon, ShieldIcon, ShoppingBasketIcon, UserCog2Icon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
@@ -30,10 +30,14 @@ export default async function Manager() {
               <input type="text" placeholder="Search here" className="w-full h-10 rounded-full border border-gray-300 pl-10 pr-4 text-sm sm:text-base outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500" />
             </label>
           </div>
-
-          {/* User */}
-          <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer">
-            <Image src={session.user.image ? `http://localhost:3000${session.user.image}` : `http://localhost:3001/default/user.png`} alt="user-photo" width={40} height={40} className="w-full h-full object-cover" />
+          {/* User and car */}
+          <div className="flex gap-5">
+            <div className="w-10 h-10 flex items-center justify-center border-gray-900 rounded-full overflow-hidden cursor-pointer">
+              <Link href={"/car"}> <ShoppingBasketIcon color={"#008000"} size={32} /></Link>
+            </div>
+            <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer">
+              <Image src={session.user.image ? `http://localhost:3000${session.user.image}` : `http://localhost:3001/default/user.png`} alt="user-photo" width={40} height={40} className="w-full h-full object-cover" />
+            </div>
           </div>
         </div>
 
