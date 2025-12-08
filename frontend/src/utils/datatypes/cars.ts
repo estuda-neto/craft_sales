@@ -1,10 +1,12 @@
+import { ItemWithProduct } from "./items";
+
 export enum CarStatus {
     OPEN = "OPEN",
     CLOSED = "CLOSED",
     PENDING = "PENDING",
 };
 
-export interface CarWithProducts {
+export interface CarWithItems {
     carId: string,
     name: string,
     status: CarStatus,
@@ -12,7 +14,7 @@ export interface CarWithProducts {
     userId: string,
     createdAt: Date,
     updatedAt: Date,
-    items: []
+    items: ItemWithProduct[];
 };
 
 export interface CarOut { };

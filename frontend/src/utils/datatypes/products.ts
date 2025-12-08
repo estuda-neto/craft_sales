@@ -1,5 +1,6 @@
 export interface ProductIn {
     name: string;
+    material: string;
     price: number;
     quantStock: number;
     description: string;
@@ -9,6 +10,7 @@ export interface ProductIn {
 export interface Product {
     productId: string;
     name: string;
+    material: string;
     price: number;
     quantStock: number;
     onSale: boolean | null;

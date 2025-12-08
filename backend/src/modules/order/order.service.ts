@@ -24,6 +24,8 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
     if (!result) throw new ApiError('The resource could not be retrieved', 400);
     return result;
   }
+  //TODO: 
+  async paymentOrder(){}
 
   // public async update(id: number, data: Partial<Pagamento>): Promise<[number]> {
   //   const pagamentoExistente = await this.pagamentoRepository.getById(id);

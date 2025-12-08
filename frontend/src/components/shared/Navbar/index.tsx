@@ -14,8 +14,6 @@ export const NavBar: React.FC<NavBarProps> = ({ isMobile, onLinkClick }) => {
     { id: 2, label: "Cadastro", href: "/cadastro" },
     { id: 3, label: "Services", href: "/services" },
     { id: 4, label: "Contact", href: "/contact" },
-    { id: 5, label: "Password", href: "/forgotpassword" },
-    { id: 6, label: "Serviços", href: "/services" },
   ];
 
   return (

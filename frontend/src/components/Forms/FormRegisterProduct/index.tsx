@@ -14,7 +14,7 @@ export const FormRegisterProduct = () => {
   const router = useRouter();
   const methods = useForm<ProductFormSchemaType>({
     resolver: yupResolver(productFormSchema), mode: "onChange",
-    defaultValues: { name: "", price: 0, quantStock: 0, description: "" },
+    defaultValues: { name: "", material: "", price: 0, quantStock: 0, description: "" },
   });
 
   const onSubmitProduct = async (data: ProductFormSchemaType) => {
@@ -67,6 +67,7 @@ export const FormRegisterProduct = () => {
         {/* Nome + Preço */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <InputCustom name="name" label="Nome do Produto" required />
+          <InputCustom name="material" label="Material utilizado" required />
           <InputCustom name="price" label="Preço" type="number" required />
         </div>
 

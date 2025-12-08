@@ -6,6 +6,10 @@ export class CreateProductDto {
     @IsString()
     name: string;
 
+    @ApiProperty({ description: "Product material", example: "cerâmica" })
+    @IsString()
+    material: string;
+
     @ApiProperty({ description: "Product price", example: 120.50 })
     @IsNumber()
     @IsPositive()

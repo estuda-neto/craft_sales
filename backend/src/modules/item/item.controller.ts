@@ -1,16 +1,22 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete, Post } from '@nestjs/common';
 import { ItemService } from './item.service';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { CreateItemToCarDto } from './dto/create-item-to-car.dto';
 
 @Controller('items')
 export class ItemController {
   constructor(private readonly itemService: ItemService) { }
 
-  // Criar item (em teoria usado pelo CartService, mas pode deixar aqui)
-  // @Post()
-  // async create(@Body() createItemDto: CreateItemDto) {
-  //   return await this.itemService.create(createItemDto);
+  @Post()
+  async createItemfromProducOriginCar(@Body() createItemWithProducts: CreateItemToCarDto) {
+    return await this.itemService.createItemfromProductOriginCar(createItemWithProducts);
+  }
+
+  // @Patch(':id/typeOrigin')
+  // async typeOrigin(@Param('id') itemId: string) {
+  //   return await this.itemService.updateOrigin(itemId);
   // }
+
 
   @Get()
   async findAll() {
@@ -22,17 +28,13 @@ export class ItemController {
     return await this.itemService.findOne(id);
   }
 
-  // Atualizar tudo do item (não recomendado pra ecommerce, mas deixamos por padrão)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
     return await this.itemService.update(id, updateItemDto);
   }
 
   @Patch(':id/quantity/:quantity')
-  async updateQuantity(
-    @Param('id') itemId: string,
-    @Param('quantity') quantity: number,
-  ) {
+  async updateQuantity(@Param('id') itemId: string, @Param('quantity') quantity: number) {
     return await this.itemService.updateQuantity(itemId, Number(quantity));
   }
 

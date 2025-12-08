@@ -22,7 +22,7 @@ export const MenuAside: React.FC = () => {
   ];
 
   return (
-    <aside className={`${menuActive ? "w-20" : "w-72"} h-full bg-(--brand-400) text-white flex flex-col transition-all duration-200 overflow-x-hidden relative z-10`}>
+    <aside className={`${menuActive ? "w-12" : "w-72"} h-full bg-(--brand-400) text-white flex flex-col transition-all duration-200 overflow-x-hidden relative z-10`}>
       <button type="button" onClick={() => setMenuActive(!menuActive)} className="w-14 h-14 flex justify-center items-center text-white hover:bg-(--brand-500) transition-colors duration-300 mt-3 ml-3 rounded-lg">
         <AlignJustifyIcon size={28} />
       </button>

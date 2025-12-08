@@ -35,20 +35,18 @@ export class Order extends Model<InferAttributes<Order>, InferCreationAttributes
     declare status: CreationOptional<OrderStatus>;
 
     @Column({ type: DataType.ENUM(...Object.values(PaymentMethod)), allowNull: false })
-    declare methodPayment: PaymentMethod;
+    declare methodPayment: CreationOptional<PaymentMethod>;
 
     @Column(DataType.FLOAT)
-    declare value: number;
+    declare value: CreationOptional<number>;
 
     @Column(DataType.STRING)
     declare code: string;
 
     @Column(DataType.DATE)
-    declare datePayment: Date;
+    declare datePayment: CreationOptional<Date>;
 
-    @Column(DataType.DATE)
-    declare dateSent: Date;
-
+    
     //relationships
 
     /** relationships N:1 Address*/
@@ -66,7 +64,7 @@ export class Order extends Model<InferAttributes<Order>, InferCreationAttributes
     /** retationship N:1 -> User*/
     @ForeignKey(() => User)
     @Column(DataType.UUID)
-    declare usersId: string;
+    declare userId: string;
 
     @BelongsTo(() => User)
     declare user?: User;

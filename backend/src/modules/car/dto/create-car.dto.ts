@@ -1,1 +1,4 @@
-export class CreateCarDto {}
+export class CreateCarDto {
+    name:string;
+    userId:string; 
+}

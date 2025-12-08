@@ -3,6 +3,7 @@ import { BaseRepository } from "src/common/base/base.repository";
 import { InjectModel } from "@nestjs/sequelize";
 import { Order } from "../entities/order.entity";
 import { InferCreationAttributes } from "sequelize";
+import { Item } from "src/modules/item/entities/item.entity";
 
 @Injectable()
 export class OrderRepository extends BaseRepository<Order> {
@@ -27,4 +28,9 @@ export class OrderRepository extends BaseRepository<Order> {
     async getInstanceById(id: string): Promise<Order | null> {
         return await this.orderModel.findByPk(id);
     }
+    async findByIdWithItems(id: string): Promise<Order | null> {
+        return await this.orderModel.findByPk(id, { include: [Item], });
+    }
 }
+
+

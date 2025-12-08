@@ -7,20 +7,11 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from '../user/utils/decorators/roles.decorator';
 import { JwtAuthGuard } from '../user/utils/guards/jwt.guard';
 import { RolesGuard } from '../user/utils/guards/roles.guard';
+import { CheckCarDto } from './dto/check-car.dto';
 
 @Controller('cars')
 export class CarController {
-  constructor(private readonly carService: CarService) {}
-
-  @Post()
-  async create(@Body() createCarDto: CreateCarDto) {
-    return await this.carService.create(createCarDto);
-  }
-
-  @Post(':id/items')
-  async addProductToCar(@Body() registerItemToCarDto: RegisterItemToCarDto) {
-    return await this.carService.registerItem(registerItemToCarDto);
-  }
+  constructor(private readonly carService: CarService) { }
 
   @Get()
   async findAll() {
@@ -49,4 +40,11 @@ export class CarController {
   async getUserCar(@Param('userId') userId: string) {
     return await this.carService.findCarOfUser(userId);
   }
+
+  @Post('/car/checkout')
+  async checkoutCar(@Body() updateCarDto: CheckCarDto) {
+    return await this.carService.checkout(updateCarDto.carId, updateCarDto.userId);
+  }
+
+
 }

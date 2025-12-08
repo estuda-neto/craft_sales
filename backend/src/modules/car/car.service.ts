@@ -1,19 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { BaseService } from 'src/common/base/base.service';
 import { ApiError } from 'src/common/errors/apierror.class';
 import { InferCreationAttributes } from 'sequelize';
-import { Car } from './entities/car.entity';
+import { Car, CarStatus } from './entities/car.entity';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
 import { CarRepository } from './repository/car.repository';
-import { RegisterItemToCarDto } from './dto/register_item-car.dto';
 import { ItemService } from '../item/item.service';
-import { Item, TypeOrigin } from '../item/entities/item.entity';
-import { ProductService } from '../product/product.service';
+import { UserService } from '../user/user.service';
+import { OrderService } from '../order/order.service';
+import { CreateOrderDto } from '../order/dto/create-order.dto';
+import { Order } from '../order/entities/order.entity';
 
 @Injectable()
 export class CarService extends BaseService<Car, CreateCarDto, UpdateCarDto> {
-  constructor(private readonly carRepository: CarRepository, private readonly itemService: ItemService, private readonly productService: ProductService) {
+  constructor(private readonly carRepository: CarRepository,
+    private readonly userService: UserService,
+    private readonly orderService: OrderService,
+    @Inject(forwardRef(() => ItemService))
+    private readonly itemService: ItemService,
+  ) {
     super(carRepository);
   }
 
@@ -27,38 +33,39 @@ export class CarService extends BaseService<Car, CreateCarDto, UpdateCarDto> {
     return result;
   }
 
-  //TODO: test
-  async registerItem(registerItemToCarDto: RegisterItemToCarDto): Promise<Car> {
-    const { itemId, carId, productId, quantProduct, price, sizeVariation, orderId } = registerItemToCarDto;
-
-    // verifica se o carrinho existe
-    const car = await this.carRepository.findById(carId);
-    if (!car) throw new ApiError('Car not found', 404);
-
-    // verifica se o item já existe no carrinho
-    const existingItem = await this.itemService.findOneByCarIdAndItemId(carId, itemId);
-
-    if (existingItem) {
-      existingItem.quantProduct += quantProduct;
-      await this.itemService.update(existingItem.itemId, existingItem);
-      const carUpdated = await this.carRepository.findByIdWithItems(carId);
-      if (!carUpdated) throw new ApiError('Car not found after item update', 400);
-      return carUpdated;
-    }
-
-    const newItem = { sizeVariation, quantProduct, price, carId, orderId, productId } as InferCreationAttributes<Item>;
-
-    await this.itemService.create(newItem);
-    const carUpdated = await this.carRepository.findByIdWithItems(carId);
-    if (!carUpdated) throw new ApiError('Car not found after item update', 400);
-    return carUpdated;
-  }
-
   async findCarOfUser(userId: string): Promise<Car> {
     const car = await this.carRepository.getCarOfUserWithUserId(userId);
     if (!car) throw new ApiError("car not found", 404)
     return car;
   }
 
+  async checkout(carId: string, userId: string):Promise<Order> {
+    const user = await this.userService.findOne(userId);
+    if (!user) throw new ApiError("this user not found.", 404);
+
+    const car = await this.carRepository.getInstanceById(carId);
+    if (!car) throw new ApiError("this car not found.", 404);
+    car.status = CarStatus.CLOSED;
+    await car.save();
+
+    const pedido = await this.orderService.create({
+      name: `oder:${user.name}_${new Date()}`, code: "hashcodeNotImplemented", addressId: user.addressId, userId: user.userId
+    } as CreateOrderDto);
+
+    car.items?.forEach(async (item) => {
+      const itemTemp = await this.itemService.updateOrigin(item.itemId);
+      await this.itemService.associateToOrder(itemTemp.itemId, pedido.orderId);
+    });
+    return pedido;
+  }
+
+  async clearCar(carId: string, userId: string):Promise<Car>{
+    const user = await this.userService.findOne(userId);
+    if (!user) throw new ApiError("this user not found.", 404);
+
+    await this.remove(carId);
+    const newCar = await this.create({ name: `${user.name} user's shopping cart`, userId: user.userId } as CreateCarDto);
+    return newCar;
+  }
 
 }

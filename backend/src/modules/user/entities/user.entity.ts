@@ -124,7 +124,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
     }
 
     @AfterCreate
-    static async createPortfolio(instance: User) {
+    static async createCar(instance: User) {
         await Car.create({ userId: instance.userId, name: `${instance.name} user's shopping cart` });
     }
 }

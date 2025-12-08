@@ -16,6 +16,9 @@ export class Product extends Model<InferAttributes<Product>, InferCreationAttrib
     @Column(DataType.STRING)
     declare name: string;
 
+    @Column(DataType.STRING)
+    declare material: string;
+
     @Column(DataType.FLOAT)
     declare price: number;
 
