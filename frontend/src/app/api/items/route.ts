@@ -10,11 +10,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         const refreshtoken = (await cookieStore).get("jwt_back_refresh");
         let refreshJwt = !refreshtoken ? "not found" : refreshtoken.value;
-        if (!jwt || !refreshJwt)
-            return NextResponse.json({ message: "Token não encontrado." }, { status: 401 });
+        if (!jwt || !refreshJwt) return NextResponse.json({ message: "Token não encontrado." }, { status: 401 });
 
         // const user = decoderTokenToClaims(jwt);
-        const body = await req.json();
+        const data = await req.json();
+
+        // console.log(`\n\n${JSON.stringify(data)}\n\n`)
 
         const response = await fetch(`${BASE_URL_BACKEND}/items`, {
             method: "POST",
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 Authorization: `Bearer ${jwt}`,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(body),
+            body: JSON.stringify(data),
         });
         const contentType = response.headers.get("Content-Type");
         if (contentType && contentType.includes("application/json") && response.status === 201) {

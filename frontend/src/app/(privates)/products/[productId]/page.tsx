@@ -6,6 +6,7 @@ import { ImageGallery } from "@/src/components/ImageGallery";
 import { Product } from "@/src/utils/datatypes/products";
 import { Loader } from "@/src/components/shared/Loader";
 import { FormInterativeSeller } from "@/src/components/Forms";
+import { CarWithItems } from "@/src/utils/datatypes/cars";
 
 async function getProduct(session: Session, productId: string): Promise<Product | null> {
     try {
@@ -35,6 +36,32 @@ async function getProduct(session: Session, productId: string): Promise<Product 
     }
 };
 
+async function getCarOfUser(session: Session): Promise<CarWithItems | null> {
+    try {
+        if (!session?.accessToken) {
+            console.log("Missing access token.");
+            return null;
+        }
+        const response = await fetch(`http://localhost:3000/cars/user/${session.user.id}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${session.accessToken}`,
+            },
+        });
+
+        if (!response.ok) {
+            return null;
+        }
+
+        const data = (await response.json()) as CarWithItems;
+        return data;
+
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        return null;
+    }
+};
+
 interface Props { params: { productId: string }; };
 
 export default async function ProductDetails({ params }: Props) {
@@ -43,6 +70,7 @@ export default async function ProductDetails({ params }: Props) {
     if (!session) redirect("/");
     const product = await getProduct(session, productId);
     const produtImages = [product?.image ? product?.image : "", "/images/fini-2.jpg", "/images/fini-3.jpg", "/images/fini-4.jpg"];
+    const carUser = await getCarOfUser(session);
 
 
     return (<div className='w-full min-h-screen relative bg-gray-100 transition-colors duration-500'>
@@ -52,7 +80,7 @@ export default async function ProductDetails({ params }: Props) {
                 <div className="flex flex-col md:flex-row gap-6">
                     <ImageGallery images={produtImages} />
                     {product ? (
-                        <FormInterativeSeller product={product} cartId={"81f545ca-ef45-41e8-bb51-233c9d27de06"} />
+                        <FormInterativeSeller product={product} cartId={carUser ? carUser.carId : ''} />
                     ) : (
                         <Loader />
                     )}

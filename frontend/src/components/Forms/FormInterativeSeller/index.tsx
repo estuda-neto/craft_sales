@@ -16,10 +16,7 @@ const reviewsCount = 2;
 const parcelados = { parcelas: 5, value: 59.89, };
 
 const formatPrice = (cents: number) => (cents / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-type FormInterativeSellerProps = {
-    cartId: string;
-    product: Product;
-};
+type FormInterativeSellerProps = { cartId: string; product: Product; };
 
 export const FormInterativeSeller: React.FC<FormInterativeSellerProps> = ({ product, cartId }) => {
     const savings = 4; //product.price ? product.price - product.price : 0;
@@ -31,6 +28,7 @@ export const FormInterativeSeller: React.FC<FormInterativeSellerProps> = ({ prod
 
 
     const sendProducToCar = async (data: ItemFormSchemaType) => {
+        console.log("\n\n", data);
         try {
             const response = await fetch("http://localhost:3001/api/items", {
                 method: "POST",
@@ -40,14 +38,14 @@ export const FormInterativeSeller: React.FC<FormInterativeSellerProps> = ({ prod
                 body: JSON.stringify(data),
             });
 
-            if (!response.ok) {
-                throw new Error("Erro ao adicionar ao carrinho");
+            if (response.status !== 201) {
+                toast.error("Não foi possível adicionar esse item ao seu carrinho!");
+
             }
             toast.success("Item adicionado ao carrinho!");
             router.push("/car");
         } catch (error) {
-            toast.error("Não foi possível adicionar esse item ao seu carrinho!");
-            console.error(error);
+            throw new Error("Erro ao adicionar ao carrinho" + error);
         }
     };
 

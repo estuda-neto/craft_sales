@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { CarService } from './car.service';
-import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
-import { RegisterItemToCarDto } from './dto/register_item-car.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from '../user/utils/decorators/roles.decorator';
 import { JwtAuthGuard } from '../user/utils/guards/jwt.guard';
@@ -13,21 +11,33 @@ import { CheckCarDto } from './dto/check-car.dto';
 export class CarController {
   constructor(private readonly carService: CarService) { }
 
+  @ApiBearerAuth('jwt')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
   async findAll() {
     return await this.carService.findAll();
   }
 
+  @ApiBearerAuth('jwt')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.carService.findOne(id);
   }
 
+  @ApiBearerAuth('jwt')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateCarDto: UpdateCarDto) {
     return await this.carService.update(id, updateCarDto);
   }
 
+  @ApiBearerAuth('jwt')
+  @Roles('ADMIN', 'CLIENTE', 'ARTESAO')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.carService.remove(id);

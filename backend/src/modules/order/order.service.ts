@@ -8,6 +8,7 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderRepository } from './repository/order.repository';
 import { EfiService } from './efi.service';
 import { AddressInfo, BoletoChargePayload, BoletoPaymentResponse, CustomerInfo } from './utils/interfaces.efi';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 
 @Injectable()
 export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrderDto> {
@@ -24,8 +25,11 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
     if (!result) throw new ApiError('The resource could not be retrieved', 400);
     return result;
   }
+  
   //TODO: 
-  async paymentOrder(){}
+  async paymentOrder(orderId: string, dto: CreatePaymentDto): Promise<Order> {
+    return {} as Order;
+  }
 
   // public async update(id: number, data: Partial<Pagamento>): Promise<[number]> {
   //   const pagamentoExistente = await this.pagamentoRepository.getById(id);
@@ -168,5 +172,5 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
   //   }
   // }
 
-  
+
 }

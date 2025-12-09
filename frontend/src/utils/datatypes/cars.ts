@@ -16,5 +16,3 @@ export interface CarWithItems {
     updatedAt: Date,
     items: ItemWithProduct[];
 };
-
-export interface CarOut { };

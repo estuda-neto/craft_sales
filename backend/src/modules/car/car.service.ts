@@ -39,7 +39,7 @@ export class CarService extends BaseService<Car, CreateCarDto, UpdateCarDto> {
     return car;
   }
 
-  async checkout(carId: string, userId: string):Promise<Order> {
+  async checkout(carId: string, userId: string): Promise<Order> {
     const user = await this.userService.findOne(userId);
     if (!user) throw new ApiError("this user not found.", 404);
 
@@ -59,7 +59,7 @@ export class CarService extends BaseService<Car, CreateCarDto, UpdateCarDto> {
     return pedido;
   }
 
-  async clearCar(carId: string, userId: string):Promise<Car>{
+  async clearCar(carId: string, userId: string): Promise<Car> {
     const user = await this.userService.findOne(userId);
     if (!user) throw new ApiError("this user not found.", 404);
 

@@ -13,6 +13,7 @@ import { CreateItemToOrderDto } from './dto/create-item-to-order.dto';
 
 @Injectable()
 export class ItemService extends BaseService<Item, CreateItemDto, UpdateItemDto> {
+  
   constructor(private readonly itemRepository: ItemRepository,
     @Inject(forwardRef(() => CarService))
     private readonly carService: CarService,
