@@ -22,15 +22,12 @@ export class EfiService {
         this.clientSecret = this.configService.get<string>('EFIPAY_CLIENT_SECRET') ?? "";
         const certPath = this.configService.get<string>('EFIPAY_CERTIFICATE_PATH') ?? "";
 
-        if (!certPath) throw new ApiError("Certificado da Efi não configurado.",400);
+        if (!certPath) throw new ApiError("Certificado da Efi não configurado.", 400);
         this.certificate = fs.readFileSync(certPath);
     }
 
     private getHttpsAgent(): https.Agent {
-        return new https.Agent({
-            cert: this.certificate,
-            key: this.certificate,
-        });
+        return new https.Agent({ cert: this.certificate, key: this.certificate });
     }
 
     private async getAccessToken(): Promise<string> {
@@ -48,27 +45,6 @@ export class EfiService {
         return response.data.access_token;
     }
 
-    /**
-     * @description Retorna as chaves Pix cadastradas na conta Efi.
-     * @returns {Promise<string[]>} Lista de chaves Pix.
-     */
-    public async getPixKeys(): Promise<string[]> {
-        const accessToken = await this.getAccessToken();
-
-        const response = await axios.get(`${this.baseUrl}/v2/gn/pix/keys`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                "Content-Type": "application/json",
-            },
-            httpsAgent: this.getHttpsAgent(),
-        });
-
-        return response.data.chaves.filter((chave: { tipo: string }) => chave.tipo === "random").map((chave: { chave: string }) => chave.chave);
-    }
-
-    /**
-     * @description A Efi (assim como outras instituições participantes do Pix) segue as regras do Banco Central, então o limite de 5 chaves aleatórias é por conta transacional Pix.
-     */
     public async createRandomPixKey(): Promise<string> {
         const existingKeys = await this.getPixKeys();
 
@@ -95,17 +71,35 @@ export class EfiService {
         return response.data.chave;
     }
 
+    /**
+    * @description Retorna as chaves Pix cadastradas na conta Efi.
+    * @returns {Promise<string[]>} Lista de chaves Pix.
+    */
+    public async getPixKeys(): Promise<string[]> {
+        const accessToken = await this.getAccessToken();
+
+        const response = await axios.get(`${this.baseUrl}/v2/gn/pix/keys`, {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "Content-Type": "application/json",
+            },
+            httpsAgent: this.getHttpsAgent(),
+        });
+
+        return response.data.chaves.filter((chave: { tipo: string }) => chave.tipo === "random").map((chave: { chave: string }) => chave.chave);
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public async createImmediateChargePix({ chavePix, valor, nome, cpf, descricao }: PixChargePayload): Promise<any> {
+    public async createImmediateChargePix({ pixKey, value, name, cpf, description }: PixChargePayload): Promise<any> {
         const accessToken = await this.getAccessToken();
         const txid = crypto.randomBytes(10).toString("hex");
 
         const body = {
             calendario: { expiracao: 3600 },
-            devedor: { cpf, nome },
-            valor: { original: valor.toFixed(2) },
-            chave: chavePix,
-            solicitacaoPagador: descricao,
+            devedor: { cpf, name },
+            valor: { original: value.toFixed(2) },
+            chave: pixKey,
+            solicitacaoPagador: description,
         };
 
         const response = await axios.put(
@@ -197,8 +191,7 @@ export class EfiService {
             },
         };
 
-        const response = await axios.post(
-            `${this.baseUrl}/v1/charge/${chargeId}/payment`,
+        const response = await axios.post(`${this.baseUrl}/v1/charge/${chargeId}/payment`,
             paymentData,
             {
                 headers: {

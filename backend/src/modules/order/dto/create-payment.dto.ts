@@ -1,30 +1,27 @@
-import { IsDateString, IsNotEmpty, IsUUID, IsEnum, IsNumber } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
-import { OrderStatus, PaymentMethod } from "../entities/order.entity";
+import { IsNotEmpty, IsUUID, IsEnum, IsNumber, IsInt, Min, Max, ValidateIf } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { PaymentMethod } from "../entities/order.entity";
 
 export class CreatePaymentDto {
-
-    @ApiProperty({ description: "Status do pedido", enum: OrderStatus, example: OrderStatus.PAID })
-    @IsEnum(OrderStatus)
-    @IsNotEmpty()
-    status: OrderStatus;
 
     @ApiProperty({ description: "Método de pagamento", enum: PaymentMethod, example: PaymentMethod.CREDIT_CARD })
     @IsEnum(PaymentMethod)
     @IsNotEmpty()
     methodPayment: PaymentMethod;
 
-    @ApiProperty({ description: "Valor pago", example: 120.50 })
-    @IsNumber()
-    @IsNotEmpty()
-    value: number;
+    @ApiPropertyOptional({ description: "Token do cartão (obrigatório se methodPayment = CREDIT_CARD)", example: "tok_93hd9sj932...w8d82h" })
+    @ValidateIf(o => o.methodPayment === PaymentMethod.CREDIT_CARD)
+    @IsNotEmpty({ message: "creditCardToken é obrigatório quando o pagamento é por cartão de crédito." })
+    creditCardToken?: string;
 
-    @ApiProperty({ description: 'Data do pagamento (YYYY-MM-DD)', example: '2026-08-21' })
-    @IsDateString({}, { message: 'A data deve estar no formato YYYY-MM-DD' })
+    @ApiProperty({ description: "Número de parcelas (entre 1 e 12)", example: 3 })
+    @IsInt()
+    @Min(1)
+    @Max(12)
     @IsNotEmpty()
-    datePayment: Date;
+    numberOfInstallments: number;
 
-    @ApiProperty({ description: "Endereço usado no pedido", example: "a34bb8e1-e5cc-40bc-8ab8-97cfef9e6a63" })
+    @ApiProperty({ description: "Endereço de entrega do pedido", example: "a34bb8e1-e5cc-40bc-8ab8-97cfef9e6a63" })
     @IsUUID()
     @IsNotEmpty()
     addressId: string;

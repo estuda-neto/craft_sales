@@ -9,6 +9,7 @@ import { Header } from "@/src/components/shared/Header";
 import { MenuAside } from "@/src/components/shared/MenuAside";
 import { LayoutCaptureError } from "@/src/components/shared/Layouts/Manager/layer_cap_error";
 import { Footer } from "@/src/components/shared/Footer";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,9 @@ export default function RootLayout({ children, cookies }: RootLayoutProps) {
 
   return (
     <html lang="pt-BR">
+      <head>
+        <Script src="https://cdn.efi.com.br/checkout-js/v3/checkout.js" strategy="beforeInteractive" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased ${theme === 'dark' ? 'dark' : ''}`} data-testid="root-layout">
         <ThemeInitializer />
         <MenuProvider>

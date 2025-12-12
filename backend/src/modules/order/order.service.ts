@@ -2,17 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { BaseService } from 'src/common/base/base.service';
 import { ApiError } from 'src/common/errors/apierror.class';
 import { InferCreationAttributes } from 'sequelize';
-import { Order } from './entities/order.entity';
+import { Order, OrderStatus } from './entities/order.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrderRepository } from './repository/order.repository';
 import { EfiService } from './efi.service';
-import { AddressInfo, BoletoChargePayload, BoletoPaymentResponse, CustomerInfo } from './utils/interfaces.efi';
+import { AddressInfo, BoletoChargePayload, BoletoPaymentResponse, CustomerInfo, PixChargePayload } from './utils/interfaces.efi';
 import { CreatePaymentDto } from './dto/create-payment.dto';
+import { UserService } from '../user/user.service';
+import { AddressService } from '../address/address.service';
 
 @Injectable()
 export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrderDto> {
-  constructor(private readonly orderRepository: OrderRepository, private readonly efiPaymentService: EfiService) {
+
+  constructor(private readonly orderRepository: OrderRepository,
+    private readonly efiPaymentService: EfiService,
+    private readonly userService: UserService,
+    private readonly addressService: AddressService
+  ) {
     super(orderRepository);
   }
 
@@ -25,11 +32,108 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
     if (!result) throw new ApiError('The resource could not be retrieved', 400);
     return result;
   }
-  
-  //TODO: 
-  async paymentOrder(orderId: string, dto: CreatePaymentDto): Promise<Order> {
-    return {} as Order;
+
+  private async calculateAmountToBePaid(orderId: string): Promise<number> {
+    const order = await this.orderRepository.findByIdWithItems(orderId);
+    if (!order) throw new ApiError("This order does not exist", 404);
+
+    if (!order.items || order.items.length === 0) {
+      return 0;
+    }
+    const total = order.items.reduce((acc, item) => {
+      const price = Number(item.price) || 0;
+      const qty = Number(item.quantProduct) || 0;
+      return acc + price * qty;
+    }, 0);
+
+    return Number(total.toFixed(2));
   }
+
+  //TODO:  status pode ser 
+  /**
+    PENDING_PAYMENT = "PENDING_PAYMENT",                   // ainda nao foi pago
+    DESIRING_PAYMENT = "DESIRING_PAYMENT",                 // desejando pagar
+    INPHASE_PAYMENT =  "INPHASE_PAYMENT",                  // em fase de pagamento
+    PAID = "PAID",                                         // pago
+    PROCESSING = "PROCESSING",                             // parcelado
+    DESIRING_REIMBURSEMENT = "DESIRING_REIMBURSEMENT",     // desejando reembolso
+    PENDING_REIMBURSEMENT = "PENDING_REIMBURSEMENT",       // desejando reembolsado
+    REIMBURSEMENT = "REIMBURSEMENT",                       // reembolsado
+    CANCELED = "CANCELED"                                  // cancelado
+
+    metodo de pagamento 
+    PIX = "PIX",
+    CREDIT_CARD = "CREDIT_CARD",
+    DEBIT_CARD = "DEBIT_CARD",
+    BOLETO = "BOLETO",
+    CASH = "CASH"
+  */
+
+  /**  methodPayment: PaymentMethod;  value: number; addressId: string; userId: string;  */
+  async paymentOrder(orderId: string, dto: CreatePaymentDto): Promise<Order> {
+    const order = await this.orderRepository.findByIdWithItems(orderId);
+    if (!order) throw new ApiError("this order not exists", 404);
+
+    const user = await this.userService.findOne(order.userId);
+    const addressOfUser = await this.addressService.findOne(user.userId);
+
+    const orderUpdate = await this.orderRepository.getInstanceById(orderId);
+    if (!orderUpdate) throw new ApiError("this order not exists", 404);
+
+    // Generate data global
+    const valuePaid = await this.calculateAmountToBePaid(orderId);
+
+    const items = order.items?.map(item => ({ name: user.name || "", value: Number(item.price) || 0, amount: Number(item.quantProduct) || 0 })) || [];
+    const customer: CustomerInfo = { name: user.name, cpf: user.cpf, phone_number: user.phone, email: user.email, birth: "" };
+    /** street: string; numerHouse: string; neighborhood: string; CEP: string; city: string; state: string; */
+    const address: AddressInfo = {
+      street: addressOfUser.streetAndHouseNumber, numerHouse: '1',
+      neighborhood: addressOfUser.neighborhood, CEP: addressOfUser.CEP, city: addressOfUser.city, state: addressOfUser.state,
+    };
+
+    switch (order.status) {
+      case OrderStatus.DESIRING_PAYMENT:
+        if (dto.methodPayment === "PIX") {
+          const pixKey = await this.efiPaymentService.createRandomPixKey();
+          const pixchangeDto: PixChargePayload = { pixKey, value: valuePaid, name: user.name, cpf: user.cpf, description: `Cobrança referente aos produtos...` };
+
+          const charge = await this.efiPaymentService.createImmediateChargePix(pixchangeDto);
+          const qrCode = await this.efiPaymentService.generatePixQrCode(charge.locId);
+
+          orderUpdate.qrCode = qrCode.qrcode;
+          orderUpdate.imageQrCode = qrCode.imagemQrcode;
+          orderUpdate.status = OrderStatus.INPHASE_PAYMENT;
+          await orderUpdate.save();
+          return order;
+        }
+
+        else if (dto.methodPayment === "CREDIT_CARD") {
+
+          const charge = await this.efiPaymentService.createCreditCardCharge(items, customer);
+          const payment = await this.efiPaymentService.payWithCreditCard(charge.chargeId, dto.creditCardToken ?? "", customer, address, dto.numberOfInstallments);
+          orderUpdate.status = OrderStatus.INPHASE_PAYMENT;
+          await orderUpdate.save();
+          return order;
+        }
+
+        else {
+          //interface BoletoChargePayload {items: ChargeItem[];customer: CustomerInfo;expireAt: string; // formato: "YYYY-MM-DD"}
+          const boeltoPayment = await this.efiPaymentService.createBoletoPaymentLink({ items, customer, expired_at: "YYYY-MM-DD" } as unknown as BoletoChargePayload);
+          orderUpdate.status = OrderStatus.INPHASE_PAYMENT;
+          await orderUpdate.save();
+          return order;
+        }
+
+      case OrderStatus.PENDING_PAYMENT:
+        //faz algo
+        break;
+
+    }
+
+    return order;
+  }
+
+  async corfirmOrder() { }
 
   // public async update(id: number, data: Partial<Pagamento>): Promise<[number]> {
   //   const pagamentoExistente = await this.pagamentoRepository.getById(id);
@@ -171,6 +275,4 @@ export class OrderService extends BaseService<Order, CreateOrderDto, UpdateOrder
   //       throw new ApiError("Método de pagamento inválido.", 404);
   //   }
   // }
-
-
 }

@@ -14,12 +14,9 @@ import { Order } from '../order/entities/order.entity';
 
 @Injectable()
 export class CarService extends BaseService<Car, CreateCarDto, UpdateCarDto> {
-  constructor(private readonly carRepository: CarRepository,
-    private readonly userService: UserService,
-    private readonly orderService: OrderService,
+  constructor(private readonly carRepository: CarRepository, private readonly userService: UserService, private readonly orderService: OrderService,
     @Inject(forwardRef(() => ItemService))
-    private readonly itemService: ItemService,
-  ) {
+    private readonly itemService: ItemService) {
     super(carRepository);
   }
 

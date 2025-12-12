@@ -1,19 +1,20 @@
 interface PixChargePayload {
-    chavePix: string;
-    valor: number;
-    nome: string;
+    pixKey: string;
+    value: number;
+    name: string;
     cpf: string;
-    descricao: string;
+    description: string;
 }
 
 interface AddressInfo {
-    rua: string;
-    numero: string;
-    bairro: string;
-    cep: string;
-    cidade: string;
-    estado: string;
+    street: string;
+    numerHouse: string;
+    neighborhood: string;
+    CEP: string;
+    city: string;
+    state: string;
 }
+
 interface ChargeItem {
     name: string;
     value: number; // em centavos

@@ -1,5 +1,5 @@
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from "sequelize";
-import { BeforeCreate, BelongsTo, Column, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AllowNull, BeforeCreate, BelongsTo, Column, DataType, Default, ForeignKey, HasOne, Model, PrimaryKey, Table } from "sequelize-typescript";
 import { Car } from "src/modules/car/entities/car.entity";
 import { Order } from "src/modules/order/entities/order.entity";
 import { Product } from "src/modules/product/entities/product.entity";
@@ -13,7 +13,7 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
     @Column({ type: DataType.UUID })
     declare itemId: CreationOptional<string>;
 
-    @Column(DataType.STRING) 
+    @Column(DataType.STRING)
     declare sizeVariation: string; //variação tamanho
 
     @Column(DataType.ENUM(...Object.values(TypeOrigin)))
@@ -33,10 +33,10 @@ export class Item extends Model<InferAttributes<Item>, InferCreationAttributes<I
 
     /** relationship N:1 Car */
     @ForeignKey(() => Car)
-    @Column(DataType.UUID)
-    declare carId: CreationOptional<string>;
+    @Column({ type: DataType.UUID, allowNull: true })
+    declare carId: CreationOptional<string | null>;
 
-    @BelongsTo(() => Car)
+    @BelongsTo(() => Car, { foreignKey: 'carId', onDelete: 'SET NULL', onUpdate: 'CASCADE' })
     declare car?: Car;
 
     /** relationship N:1 Order */

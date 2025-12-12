@@ -53,6 +53,7 @@ export class ItemService extends BaseService<Item, CreateItemDto, UpdateItemDto>
     const item = await this.itemRepository.getInstanceById(itemId);
     if (!item) throw new ApiError('Item not found', 404);
     item.typeOrigin = TypeOrigin.PEDIDO;
+    item.carId = null;
     await item.save();
     return item;
   }

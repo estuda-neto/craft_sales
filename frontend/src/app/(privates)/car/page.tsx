@@ -29,7 +29,7 @@ export default async function MyCar() {
 
     return (
         <div className='w-full min-h-screen relative p-12 bg-gray-100 transition-colors duration-500'>
-            <CarClient carItems={car.items} userId="ewfew1222" />
+            <CarClient carItems={car.items} />
         </div>
     );
 }
